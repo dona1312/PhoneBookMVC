@@ -1,0 +1,62 @@
+﻿@model PhoneBook.ViewModels.UserVM.UserListVM
+
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Edit","Users")
+</p>
+@using (Html.BeginForm())
+{
+    <p>Search:</p>
+    @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" } })
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("First name", "List", "Users", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, { "Search",Model.Search} }, null)
+        </th>
+        <th>
+            @Html.ActionLink("Last name", "List", "Users", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" }, { "Search", Model.Search } }, null)
+        </th>
+        <th>
+            @Html.ActionLink("Username", "List", "Users", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "username_asc" ? "username_desc" : "username_asc" }, { "Search", Model.Search } }, null)
+        </th>
+    </tr>
+
+@foreach (var item in Model.UsersPaged) {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+<div>
+    Page @(Model.UsersPaged.PageCount < Model.UsersPaged.PageNumber ? 0 : Model.UsersPaged.PageNumber) of @Model.UsersPaged.PageCount
+
+    @Html.PagedListPager(Model.UsersPaged, page => Url.Action("List", new RouteValueDictionary { { "Page", page }, { "Search", Model.Search } }))
+</div>
+
+@Scripts.Render("~/bundles/jquery")

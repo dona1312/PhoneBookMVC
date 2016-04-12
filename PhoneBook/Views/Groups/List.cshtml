@@ -1,0 +1,95 @@
+﻿@model PhoneBook.ViewModels.GroupVM.GroupListVM
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Edit", "Groups")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Groups)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })|
+                <a href="#" class="showContacts">Show Contacts</a>
+            </td>
+
+            <td>
+                <table>
+                    <tr class="contacts">
+                        <th>First Name</th>
+                        <th>Last Name</th>
+
+                    </tr>
+                    @foreach (var c in item.Contacts)
+                    {
+
+                        <tr class="contacts">
+                            <td>
+                                @Html.DisplayFor(modelItem => c.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => c.LastName)
+                            </td>
+                            <td>
+                                @*Html.ActionLink("Remove from group", "RemoveFromGroup", new { ContactID = c.ID ,GroupID=item.ID},null)*@
+                                <a href="#" data-ContactID=@c.ID data-GroupID=@item.ID class="remove">Remove from group</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+
+
+        </tr>
+
+
+
+    }
+
+</table>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.showContacts').click(function () {
+                $(this).parent().next().toggle();
+            });
+
+            $('.remove').click(function () {
+                alert("hello");
+                 
+                var a=$(this).parent().parent();
+                $.ajax({
+                    type: "Post",
+                    url: '@Url.Action("RemoveFromGroup")',
+                    data:JSON.stringify({GroupID:$(this).attr('data-GroupID'), ContactID: $(this).attr('data-ContactID')}),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function() {a.remove();},
+                    error:   function() {alert('error');}
+                });
+
+             
+            });
+        });
+    </script>
+}

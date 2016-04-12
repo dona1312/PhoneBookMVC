@@ -1,0 +1,54 @@
+﻿@model PhoneBook.ViewModels.ContactVM.ContactListVM
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Edit")
+</p>
+@using (Html.BeginForm("List", "Contacts"))
+{
+   <p> Search:</p>
+    @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" } })
+}
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.ActionLink("First name", "List", "Contacts", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" } }, null)
+        </th>
+        <th>
+            @Html.ActionLink("Last name","List","Contacts",new RouteValueDictionary { { "SortOrder", Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" } },null)
+        </th>
+        <th>
+            @Html.ActionLink("Adress","List","Contacts",new RouteValueDictionary { { "SortOrder", Model.SortOrder == "adress_asc"?"adress_desc": "adress_asc" } }, null)
+        </th>
+        <th></th> 
+    </tr>
+
+    @foreach (var item in Model.Contacts)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adress)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })|
+                @Html.ActionLink("View Phones", "List", "Phones", new { ContactID = item.ID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
