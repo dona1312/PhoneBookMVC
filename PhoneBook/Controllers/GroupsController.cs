@@ -125,11 +125,17 @@ namespace PhoneBook.Controllers
         }
         public ActionResult Delete(int? id)
         {
-            GroupsService groupService = new GroupsService();
+            UnitOfWork unitOfWork = new UnitOfWork();
+            GroupsService groupService = new GroupsService(unitOfWork);
             if (!id.HasValue)
                 return RedirectToAction("List");
             else
+            {
+                groupService.GetByID(id.Value).Contacts.Clear();
                 groupService.Delete(id.Value);
+
+
+            }
             return RedirectToAction("List");
         }
     }
