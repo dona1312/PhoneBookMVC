@@ -14,12 +14,12 @@
 
     <div class="form-horizontal">
         <h4>Contact Edit VM</h4>
-        <hr />
+        <hr /> 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
-        @Html.HiddenFor(model => model.ImageUrl
-   )
-        <img src="@Url.Content(Model.ImageUrl)" alt="Image" />
+        @Html.HiddenFor(model => model.ImageUrl)
+
+        <img src="@Url.Content("http://"+HttpContext.Current.Request.Url.Host+":"+HttpContext.Current.Request.Url.Port+"/"+Model.ImageUrl)" alt="Image" />
 
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
