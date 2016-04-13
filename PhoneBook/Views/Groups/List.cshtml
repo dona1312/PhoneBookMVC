@@ -31,7 +31,7 @@
                 <a href="#" class="showContacts">Show Contacts</a>
             </td>
 
-            <td>
+            <td style="display:none"> 
                 <table>
                     <tr class="contacts">
                         <th>First Name</th>
@@ -71,7 +71,7 @@
     <script>
         $(document).ready(function () {
             $('.showContacts').click(function () {
-                $(this).parent().next().toggle();
+                $(this).parent().next().toggle("slow");
             });
 
             $('.remove').click(function () {

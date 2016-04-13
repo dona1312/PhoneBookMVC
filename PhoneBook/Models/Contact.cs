@@ -11,6 +11,7 @@ namespace PhoneBook.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Adress { get; set; }
+        public string ImagePath { get; set; }
 
         public virtual List<Phone> Phones { get; set; }
         public virtual User User { get; set; }

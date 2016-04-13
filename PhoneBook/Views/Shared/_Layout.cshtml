@@ -21,6 +21,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Users", "List", "Users")</li>
                     <li>@Html.ActionLink("Contacts", "List", "Contacts")</li>
                     <li>@Html.ActionLink("Groups", "List", "Groups")</li>
                     @if (PhoneBook.Services.AuthenticationService.LoggedUser != null)

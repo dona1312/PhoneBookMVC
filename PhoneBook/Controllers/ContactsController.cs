@@ -6,6 +6,7 @@ using PhoneBook.Services;
 using PhoneBook.ViewModels.ContactVM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -53,10 +54,15 @@ namespace PhoneBook.Controllers
             ContactEditVM model = new ContactEditVM();
             Contact contact;
             if (id.HasValue)
+            {
                 contact = contactService.GetByID(id.Value);
+                if (contact==null)
+                {
+                    return RedirectToAction("List");
+                }
+            }
             else
                 contact = new Contact();
-            
 
             model.ID = contact.ID;
             model.UserID = contact.UserID;
@@ -64,6 +70,7 @@ namespace PhoneBook.Controllers
             model.LastName = contact.LastName;
             model.Adress = contact.Adress;
             model.Phones = contact.Phones;
+            model.ImageUrl = contact.ImagePath;
             model.Groups = contactService.GetSelectedGroups(contact.Groups);
 
             return View(model);
@@ -86,18 +93,32 @@ namespace PhoneBook.Controllers
 
             if (c == null)
                 return RedirectToAction("List");
+            if (!model.ImageUpload.FileName.Contains(".jpg"))
+            {
+                ModelState.AddModelError("", "Image format not accepted!");
+            }
             if (!ModelState.IsValid)
             {
                 model.Groups = contactService.GetSelectedGroups(c.Groups);
                 return View(model);
             }
+
+            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
+            {
+                var uploadDir = "~/App_Data/Uploads";
+                var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
+                var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
+                model.ImageUpload.SaveAs(imagePath);
+                model.ImageUrl = imageUrl;
+            }
+
             c.ID = model.ID;
             c.UserID = AuthenticationService.LoggedUser.ID;
             c.FirstName = model.FirstName;
             c.LastName = model.LastName;
             c.Adress = model.Adress;
             c.Phones = model.Phones;
-            
+            c.ImagePath = model.ImageUrl;
             contactService.SetSelectedGroups(c, model.SelectedGroups);
 
             contactService.Save(c);

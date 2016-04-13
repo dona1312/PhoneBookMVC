@@ -49,13 +49,23 @@ namespace PhoneBook.Controllers
         {
             UsersService userService = new UsersService();
             UserEditVM model = new UserEditVM();
-            User user;
-            if (id.HasValue)
-                user = userService.GetByID(id.Value);
-            else
-                user = new User();
+            TryUpdateModel(model);
 
-            
+            User user;
+            if (!id.HasValue)
+            {
+                user = new User();
+            }
+            else
+            {
+                user = userService.GetByID(id.Value);
+                if (user == null)
+                {
+                    return RedirectToAction("List");
+                }
+            }
+
+
 
             model.ID = user.ID;
             model.FirstName = user.FirstName;

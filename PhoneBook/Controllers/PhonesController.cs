@@ -35,11 +35,15 @@ namespace PhoneBook.Controllers
 
             Phone phone;
             if (id.HasValue)
+            {
                 phone = phoneService.GetByID(id.Value);
+                if (phone==null)
+                {
+                    return RedirectToAction("List");
+                }
+            }
             else
                 phone = new Phone();
-            //if (phone.ID == 0 || phoneService.GetContact(model.ContactID)==null)
-              //  return RedirectToAction("List");
 
             model.ID = phone.ID;
             model.ContactID = phone.ContactID;

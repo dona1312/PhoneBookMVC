@@ -28,6 +28,10 @@ namespace PhoneBook.ViewModels.ContactVM
         public string Adress { get; set; }
         public List<Phone> Phones { get; set; }
 
+        public string ImageUrl { get; set; }
+        [DataType(DataType.Upload)]
+       public HttpPostedFileBase ImageUpload { get; set; }
+
         public IEnumerable<SelectListItem> Groups { get; set; }
         public string[] SelectedGroups { get; set; }
     }
