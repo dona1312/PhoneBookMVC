@@ -14,7 +14,8 @@ namespace PhoneBook.Services
         private readonly BaseRepository<T> baseRepo;
         public BaseService()
         {
-            baseRepo = new BaseRepository<T>();
+            this.UnitOfWork = new UnitOfWork();
+            baseRepo = new BaseRepository<T>(this.UnitOfWork);
         }
         public BaseService(UnitOfWork unit)
         {

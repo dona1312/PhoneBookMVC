@@ -48,11 +48,7 @@ namespace PhoneBook.Controllers
                 group = groupService.GetByID(id.Value);
             else
                 group = new Group();
-
-            if (group.ID == 0)
-                return RedirectToAction("List");
-
-
+            
             model.ID = group.ID;
             model.Name = group.Name;
             model.Contacts = group.Contacts;

@@ -14,7 +14,7 @@ namespace PhoneBook.ViewModels.PhoneVM
         public string Type { get; set; }
         [Display(Name = "Phone Type")]
         public PhoneTypeEnum PhoneType { get; set; }
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Numbers only")]
+        [RegularExpression("([0-9][0-9]*)", ErrorMessage = "Numbers only")]
         [Required(ErrorMessage = "Required field")]
         public string Number { get; set; }
     }
