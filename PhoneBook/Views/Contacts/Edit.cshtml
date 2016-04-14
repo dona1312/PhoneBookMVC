@@ -13,17 +13,20 @@
 
     <div class="form-horizontal">
         <hr />
+
+        <div class="photo-cont">
+            <img class="contact-photo" src="~/Uploads/@Model.ImageUrl" alt="Image" />
+            @if (Model.ImageUrl != "default.png")
+            {
+
+                <a href="#" class="deleteImage" data-contactID=@Model.ID>Delete image</a>
+            }
+        </div>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.UserID)
         @Html.HiddenFor(model => model.ImageUrl)
 
-        <img class="contact-photo" src="~/Uploads/@Model.ImageUrl" alt="Image" />
-        @if (Model.ImageUrl!="default.png")
-        {
-
-            <a href="#" class="deleteImage" data-contactID=@Model.ID>Delete image</a>
-        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -95,7 +98,7 @@
                     dataType: "json",
                     success: function () {
                         $(".contact-photo").attr("src", "/Uploads/default.png");
-                        $(".deleteImage").hide();
+                        $(".deleteImage ").hide();
                     },
                     error: function () { alert('error'); }
                 });

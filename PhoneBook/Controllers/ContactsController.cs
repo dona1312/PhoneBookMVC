@@ -71,6 +71,10 @@ namespace PhoneBook.Controllers
             model.Adress = contact.Adress;
             model.Phones = contact.Phones;
             model.ImageUrl = contact.ImagePath;
+            if (model.ImageUrl==null)
+            {
+                model.ImageUrl = "default.png";
+            }
             model.Groups = contactService.GetSelectedGroups(contact.Groups);
 
             return View(model);
