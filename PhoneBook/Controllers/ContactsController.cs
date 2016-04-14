@@ -105,11 +105,16 @@ namespace PhoneBook.Controllers
 
             if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
             {
-                var uploadDir = "~/App_Data/Uploads";
+                var uploadDir = "~/Uploads/";
                 var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
                 var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
                 model.ImageUpload.SaveAs(imagePath);
-                model.ImageUrl = imageUrl;
+            }
+            else
+            {
+                var uploadDir = "~/Uploads/";
+                var imagePath = Path.Combine(Server.MapPath(uploadDir), "default.png");
+                model.ImageUpload.SaveAs(imagePath);
             }
 
             c.ID = model.ID;
@@ -118,7 +123,7 @@ namespace PhoneBook.Controllers
             c.LastName = model.LastName;
             c.Adress = model.Adress;
             c.Phones = model.Phones;
-            c.ImagePath = model.ImageUrl;
+            c.ImagePath = model.ImageUpload.FileName;
             contactService.SetSelectedGroups(c, model.SelectedGroups);
 
             contactService.Save(c);
