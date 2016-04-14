@@ -19,7 +19,11 @@
         @Html.HiddenFor(model => model.ImageUrl)
 
         <img class="contact-photo" src="~/Uploads/@Model.ImageUrl" alt="Image" />
+        @if (Model.ImageUrl!="default.png")
+        {
 
+            <a href="#" class="deleteImage" data-contactID=@Model.ID>Delete image</a>
+        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -60,7 +64,7 @@
                 @foreach (var gr in Model.Groups)
                 {
                     <input type="checkbox" name="SelectedGroups" value="@gr.Value" id="@gr.Value" @Html.Raw(gr.Selected ? "checked" : String.Empty) />
-                        <label for="@gr.Value">@gr.Text</label>
+                    <label for="@gr.Value">@gr.Text</label>
                 }
             </div>
         </div>
@@ -80,4 +84,22 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('.deleteImage').click(function () {
+                $.ajax({
+                    type: "Post",
+                    url: '@Url.Action("DeleteImage")',
+                    data: JSON.stringify({ contactID: $(this).attr('data-contactID') }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function () {
+                        $(".contact-photo").attr("src", "/Uploads/default.png");
+                    },
+                    error: function () { alert('error'); }
+                });
+            });
+
+        });
+    </script>
 }

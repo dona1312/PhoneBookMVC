@@ -129,6 +129,19 @@ namespace PhoneBook.Controllers
             contactService.Save(c);
             return RedirectToAction("List");
         }
+        public JsonResult DeleteImage(int contactID)
+        {
+            //get contact
+            //remove  his image
+            //set default image
+            //return default image
+            ContactsService cs = new ContactsService();
+            Contact c = cs.GetByID(contactID);
+            c.ImagePath = "default.png";
+            cs.Save(c);
+            
+            return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Delete(int? id)
         {
             ContactsService contactService = new ContactsService();
