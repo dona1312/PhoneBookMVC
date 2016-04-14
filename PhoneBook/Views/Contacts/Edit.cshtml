@@ -95,6 +95,7 @@
                     dataType: "json",
                     success: function () {
                         $(".contact-photo").attr("src", "/Uploads/default.png");
+                        $(".deleteImage").hide();
                     },
                     error: function () { alert('error'); }
                 });
