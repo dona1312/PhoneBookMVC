@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Expressions;
 
 namespace PhoneBook.Controllers
 {
@@ -45,7 +46,13 @@ namespace PhoneBook.Controllers
 
             Group group;
             if (id.HasValue)
+            {
                 group = groupService.GetByID(id.Value);
+                if (group==null)
+                {
+                    return this.RedirectToAction(c => c.List());
+                }
+            }
             else
                 group = new Group();
             
@@ -75,7 +82,7 @@ namespace PhoneBook.Controllers
                 g = new Group();
 
             if (g == null)
-                return RedirectToAction("List");
+                return this.RedirectToAction(c => c.List());
 
             g.ID = model.ID;
             g.Name = model.Name;
@@ -83,7 +90,7 @@ namespace PhoneBook.Controllers
 
            
             groupService.Save(g);
-            return RedirectToAction("List");
+            return this.RedirectToAction(c => c.List());
         }
         //public ActionResult RemoveFromGroup()
         //{
@@ -124,15 +131,14 @@ namespace PhoneBook.Controllers
             UnitOfWork unitOfWork = new UnitOfWork();
             GroupsService groupService = new GroupsService(unitOfWork);
             if (!id.HasValue)
-                return RedirectToAction("List");
+                return this.RedirectToAction(c => c.List());
             else
             {
                 groupService.GetByID(id.Value).Contacts.Clear();
                 groupService.Delete(id.Value);
-
-
+                
             }
-            return RedirectToAction("List");
+            return this.RedirectToAction(c => c.List());
         }
     }
 }

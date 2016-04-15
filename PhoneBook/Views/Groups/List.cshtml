@@ -8,7 +8,7 @@
 <h2>List</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Edit", "Groups")
+    @(Html.ActionLink<GroupsController>("Create new", c => c.Edit()))
 </p>
 <table class="table">
     <tr>
@@ -26,8 +26,8 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })|
+                @(Html.ActionLink<GroupsController>("Edit", c => c.Edit(), new { id = item.ID }))|
+                @(Html.ActionLink<GroupsController>("Delete", c => c.Delete(item.ID)))|
                 <a href="#" class="showContacts">Show Contacts</a>
             </td>
 

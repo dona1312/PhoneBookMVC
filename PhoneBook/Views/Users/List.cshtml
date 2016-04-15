@@ -9,7 +9,7 @@
 <h2>List</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Edit","Users")
+    @(Html.ActionLink<UsersController>("Create New", c => c.Edit()))
 </p>
 @using (Html.BeginForm())
 {
@@ -50,8 +50,8 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            @(Html.ActionLink<UsersController>("Edit", c => c.Edit(), new { id = item.ID })) |
+            @(Html.ActionLink<UsersController>("Delete", c => c.Delete(item.ID))) |
         </td>
     </tr>
 }

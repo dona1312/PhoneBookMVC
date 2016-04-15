@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PhoneBook.Filters;
+using System.Web.Mvc.Expressions;
 
 namespace PhoneBook.Controllers
 {
@@ -63,7 +64,7 @@ namespace PhoneBook.Controllers
                 user = userService.GetByID(id.Value);
                 if (user == null)
                 {
-                    return RedirectToAction("List");
+                    return this.RedirectToAction(c => c.List(1));
                 }
             }
 
@@ -98,7 +99,7 @@ namespace PhoneBook.Controllers
                 u = new User();
 
             if (u == null)
-                return RedirectToAction("List");
+                return this.RedirectToAction(c => c.List(1));
 
             u.ID = model.ID;
             u.FirstName = model.FirstName;
@@ -116,10 +117,10 @@ namespace PhoneBook.Controllers
         {
             UsersService userService = new UsersService();
             if (!id.HasValue)
-                return RedirectToAction("List");
+                return this.RedirectToAction(c => c.List(1));
             else
                 userService.Delete(id.Value);
-            return RedirectToAction("List");
+            return this.RedirectToAction(c => c.List(1));
         }
     }
 }

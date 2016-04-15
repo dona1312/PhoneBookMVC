@@ -34,7 +34,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back", "Login")
+    @(Html.ActionLink<AccountController>("Back to List", c => c.Login()))
 </div>
 
 @section Scripts {

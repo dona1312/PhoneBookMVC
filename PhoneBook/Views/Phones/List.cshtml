@@ -24,8 +24,8 @@
                 @Html.DisplayFor(modelItem => item.Number)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID, contactID = item.ContactID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                @(Html.ActionLink<PhonesController>("Edit", c => c.Edit(), new { id = item.ID })) |
+                @(Html.ActionLink<PhonesController>("Delete", c => c.Delete(item.ID)))
             </td>
         </tr>
     }

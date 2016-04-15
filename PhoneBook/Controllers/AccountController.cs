@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Expressions;
 
 namespace PhoneBook.Controllers
 {
     public class AccountController : Controller
     {
+        [AuthorizeAccessFilter]
         // GET: Account
         public ActionResult Login(string RedirectUrl)
         {
@@ -21,22 +23,25 @@ namespace PhoneBook.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeAccessFilter]
         public ActionResult Login()
         {
             AccountLoginVM model = new AccountLoginVM();
             TryUpdateModel(model);
 
             AuthenticationService.Authenticate(model.Username, model.Password);
-            if(AuthenticationService.LoggedUser!=null)
+            if (AuthenticationService.LoggedUser != null)
             {
-                return RedirectToAction("List","Contacts");
+                return this.RedirectToAction<ContactsController>(c => c.List(1));
+              
             }
             else
             {
-                ModelState.AddModelError("","Invalid username or password");
+                ModelState.AddModelError("", "Invalid username or password");
                 return View(model);
             }
         }
+        [AuthorizeAccessFilter]
         public ActionResult Register(string str)
         {
             AccountEditVM model = new AccountEditVM();
@@ -45,6 +50,7 @@ namespace PhoneBook.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeAccessFilter]
         public ActionResult Register()
         {
             AccountEditVM model = new AccountEditVM();
@@ -52,7 +58,7 @@ namespace PhoneBook.Controllers
 
             PhoneBook.Models.User user = new Models.User();
             UsersService userService = new UsersService();
-          
+
             if (userService.CheckUsernameOrMail(user) != null)
             {
                 ModelState.AddModelError("", "Username or email already exists!");
@@ -71,8 +77,10 @@ namespace PhoneBook.Controllers
             user.Contacts = model.Contacts;
             userService.Save(user);
             PhoneBook.Services.EmailService.SendEmail(user);
-            return RedirectToAction("Login");
+            return this.RedirectToAction(c => c.Login());
+
         }
+        [AuthorizeAccessFilter]
         public ActionResult Verify()
         {
             AccountVerifyVM model = new AccountVerifyVM();
@@ -80,6 +88,7 @@ namespace PhoneBook.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeAccessFilter]
         public ActionResult Verify(int userID, string key)
         {
             AccountVerifyVM model = new AccountVerifyVM();
@@ -90,12 +99,12 @@ namespace PhoneBook.Controllers
             user.Password = model.Password;
             userService.Save(user);
 
-            return RedirectToAction("Login");
+            return this.RedirectToAction(c => c.Login());
         }
         public ActionResult Logout()
         {
             AuthenticationService.LoggedUser = null;
-            return RedirectToAction("Login");
+            return this.RedirectToAction(c => c.Login());
         }
     }
 }

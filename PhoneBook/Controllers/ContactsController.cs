@@ -4,6 +4,7 @@ using PhoneBook.Models;
 using PhoneBook.Repositories;
 using PhoneBook.Services;
 using PhoneBook.ViewModels.ContactVM;
+using System.Web.Mvc.Expressions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -56,9 +57,9 @@ namespace PhoneBook.Controllers
             if (id.HasValue)
             {
                 contact = contactService.GetByID(id.Value);
-                if (contact==null)
+                if (contact == null)
                 {
-                    return RedirectToAction("List");
+                    return this.RedirectToAction(c => c.List(1));
                 }
             }
             else
@@ -71,7 +72,7 @@ namespace PhoneBook.Controllers
             model.Adress = contact.Adress;
             model.Phones = contact.Phones;
             model.ImageUrl = contact.ImagePath;
-            if (model.ImageUrl==null)
+            if (model.ImageUrl == null)
             {
                 model.ImageUrl = "default.png";
             }
@@ -87,7 +88,6 @@ namespace PhoneBook.Controllers
             ContactsService contactService = new ContactsService(uf);
             ContactEditVM model = new ContactEditVM();
             TryUpdateModel(model);
-
             Contact c;
 
             if (model.ID != 0)
@@ -96,10 +96,19 @@ namespace PhoneBook.Controllers
                 c = new Contact();
 
             if (c == null)
-                return RedirectToAction("List");
-            if (!model.ImageUpload.FileName.Contains(".jpg"))
+                return this.RedirectToAction(co => co.List(1));
+
+
+            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
             {
-                ModelState.AddModelError("", "Image format not accepted!");
+                if (!model.ImageUpload.FileName.Contains(".jpg") || model.ImageUpload.FileName.Contains(".png"))
+                {
+                    ModelState.AddModelError("", "Image format not accepted!");
+                }
+                var uploadDir = "~/Uploads/";
+                var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
+                var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
+                model.ImageUpload.SaveAs(imagePath);
             }
             if (!ModelState.IsValid)
             {
@@ -107,19 +116,7 @@ namespace PhoneBook.Controllers
                 return View(model);
             }
 
-            if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
-            {
-                var uploadDir = "~/Uploads/";
-                var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
-                var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
-                model.ImageUpload.SaveAs(imagePath);
-            }
-            else
-            {
-                var uploadDir = "~/Uploads/";
-                var imagePath = Path.Combine(Server.MapPath(uploadDir), "default.png");
-                model.ImageUpload.SaveAs(imagePath);
-            }
+        
 
             c.ID = model.ID;
             c.UserID = AuthenticationService.LoggedUser.ID;
@@ -131,7 +128,7 @@ namespace PhoneBook.Controllers
             contactService.SetSelectedGroups(c, model.SelectedGroups);
 
             contactService.Save(c);
-            return RedirectToAction("List");
+            return this.RedirectToAction(co => co.List(1));
         }
         public JsonResult DeleteImage(int contactID)
         {
@@ -143,17 +140,17 @@ namespace PhoneBook.Controllers
             Contact c = cs.GetByID(contactID);
             c.ImagePath = "default.png";
             cs.Save(c);
-            
+
             return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Delete(int? id)
         {
             ContactsService contactService = new ContactsService();
             if (!id.HasValue)
-                return RedirectToAction("List");
+                return this.RedirectToAction(c => c.List(1));
             else
                 contactService.Delete(id.Value);
-            return RedirectToAction("List");
+            return this.RedirectToAction(c => c.List(1));
         }
     }
 }

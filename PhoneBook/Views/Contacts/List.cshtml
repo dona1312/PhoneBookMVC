@@ -8,9 +8,9 @@
 <h2>List</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Edit")
+    @(Html.ActionLink<ContactsController>("Create New", c => c.Edit()))
 </p>
-@using (Html.BeginForm("List", "Contacts"))
+@using (Html.BeginForm<ContactsController>(c => c.List(1), FormMethod.Get))
 {
    <p> Search:</p>
     @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" } })
@@ -24,13 +24,13 @@
     <tr>
 
         <th>
-            @Html.ActionLink("First name", "List", "Contacts", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" } }, null)
+           @(Html.ActionLink<ContactsController>("First Name", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, null))
         </th>
         <th>
-            @Html.ActionLink("Last name","List","Contacts",new RouteValueDictionary { { "SortOrder", Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" } },null)
+          @(Html.ActionLink<ContactsController>("Last Name", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" }, null))
         </th>
         <th>
-            @Html.ActionLink("Adress","List","Contacts",new RouteValueDictionary { { "SortOrder", Model.SortOrder == "adress_asc"?"adress_desc": "adress_asc" } }, null)
+            @(Html.ActionLink<ContactsController>("Adress", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "adress_asc" ? "adress_desc" : "adress_asc" }, null))
         </th>
         <th></th> 
     </tr>
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Adress)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })|
-                @Html.ActionLink("View Phones", "List", "Phones", new { ContactID = item.ID }, null)
+                @(Html.ActionLink<ContactsController>("Edit", c => c.Edit(), new { id = item.ID })) |
+                @(Html.ActionLink<ContactsController>("Delete", c => c.Delete(item.ID))) |
+                @(Html.ActionLink<PhonesController>("View Phones", c => c.List(), new { ContactID = item.ID }, null))
             </td>
         </tr>
     }
