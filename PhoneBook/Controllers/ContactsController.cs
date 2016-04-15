@@ -63,7 +63,10 @@ namespace PhoneBook.Controllers
                 }
             }
             else
+            {
                 contact = new Contact();
+                contact.ImagePath = "default.png";
+            }
 
             model.ID = contact.ID;
             model.UserID = contact.UserID;
@@ -88,10 +91,17 @@ namespace PhoneBook.Controllers
             ContactsService contactService = new ContactsService(uf);
             ContactEditVM model = new ContactEditVM();
             TryUpdateModel(model);
+
             Contact c;
 
             if (model.ID != 0)
+            {
                 c = contactService.GetByID(model.ID);
+                if (c == null)
+                {
+                    return this.RedirectToAction(co => co.List(1));
+                }
+            }
             else
                 c = new Contact();
 
@@ -101,7 +111,7 @@ namespace PhoneBook.Controllers
 
             if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
             {
-                if (!model.ImageUpload.FileName.Contains(".jpg") || model.ImageUpload.FileName.Contains(".png"))
+                if (!model.ImageUpload.FileName.Contains(".jpg") || !model.ImageUpload.FileName.Contains(".png"))
                 {
                     ModelState.AddModelError("", "Image format not accepted!");
                 }
@@ -117,14 +127,13 @@ namespace PhoneBook.Controllers
             }
 
         
-
             c.ID = model.ID;
             c.UserID = AuthenticationService.LoggedUser.ID;
             c.FirstName = model.FirstName;
             c.LastName = model.LastName;
             c.Adress = model.Adress;
             c.Phones = model.Phones;
-            c.ImagePath = model.ImageUpload.FileName;
+            c.ImagePath = model.ImageUrl;
             contactService.SetSelectedGroups(c, model.SelectedGroups);
 
             contactService.Save(c);
