@@ -17,7 +17,7 @@ namespace PhoneBook.Controllers
     {
 
         // GET: Users
-        public ActionResult List(int? page )
+        public ActionResult List(int? page)
         {
             UsersService userService = new UsersService();
             UserListVM model = new UserListVM();
@@ -42,7 +42,7 @@ namespace PhoneBook.Controllers
                     model.Users = model.Users.OrderBy(u => u.FirstName).ToList();
                     break;
             }
-            int pageSize =2;
+            int pageSize = 2;
             int pageNumber = (page ?? 1);
             model.UsersPaged = model.Users.ToPagedList(pageNumber, pageSize);
 
@@ -121,6 +121,15 @@ namespace PhoneBook.Controllers
             else
                 userService.Delete(id.Value);
             return this.RedirectToAction(c => c.List(1));
+        }
+
+        public JsonResult Search(string content)
+        {
+            UsersService userService = new UsersService();
+
+            var data = userService.GetAll().Where(u => u.FirstName.ToLower().Contains(content) || u.LastName.ToLower().Contains(content) || u.Username.ToLower().Contains(content) || u.Email.ToLower().Contains(content)).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+
         }
     }
 }

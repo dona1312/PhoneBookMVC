@@ -14,14 +14,14 @@
 @using (Html.BeginForm())
 {
     <p>Search:</p>
-    @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control",@id="myID"}})
+    @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control", @id = "myID" } })
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Search" class="btn btn-default"/>
+            <input type="submit" value="Search" class="btn btn-default" />
         </div>
     </div>
 }
-<table class="table">
+<table class="table" >
     <tr>
         <th>
             @Html.ActionLink("First name", "List", "Users", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, { "Search", Model.Search } }, null)
@@ -36,7 +36,7 @@
 
     @foreach (var item in Model.UsersPaged)
     {
-        <tr>
+        <tr id="table-main" >
 
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
@@ -69,19 +69,29 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
-            $('#myID').keydown(function () {
-
+            $('#myID').change(function () {
                 $.ajax({
                     type: "Post",
-                    url: '@Url.Action("GetCities")',
-                    data: JSON.stringify({ contactID: $(this).attr('data-contactID') }),
+                    url: '@Url.Action("Search")',
+                    data: JSON.stringify({ content: $(this).val() }),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function () {
                         alert('yeya');
+                        var output = $("#table-main");
+                        output.empty();
+                        for (var i = 0; i < data.length ; i++) {
+                            var user = data[i];
+                            output.append("<tr><td>" + user.FirstName + "</td><td>" +
+                            user.LastName + "</td><td>" + user.Username + "</td><td>" + user.Email +
+                            "</td></tr>");
+                        }
+
                     },
                     error: function () { alert('error'); }
+
                 });
+
             });
         });
     </script>

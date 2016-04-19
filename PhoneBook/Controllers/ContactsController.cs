@@ -170,8 +170,6 @@ namespace PhoneBook.Controllers
 
             cs.Save(contact);
              
-
-
             return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Delete(int? id)
