@@ -118,16 +118,13 @@ namespace PhoneBook.Controllers
 
             if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
             {
-                if (!model.ImageUpload.FileName.Contains(".jpg") || !model.ImageUpload.FileName.Contains(".png"))
+                var ext = Path.GetExtension(model.ImageUpload.FileName);
+                if (String.IsNullOrEmpty(ext) || !ext.Equals(".jpg", StringComparison.OrdinalIgnoreCase))
                 {
                     ModelState.AddModelError("", "Image format not accepted!");
                 }
 
-                //var uploadDir = "~/Uploads/";
-                //var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
-                //var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
-                //model.ImageUrl = model.ImageUpload.FileName;
-                //model.ImageUpload.SaveAs(imagePath);
+               
                 var uploadDir = "/Uploads/";
                 var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
                 model.ImageUrl = model.ImageUpload.FileName;
@@ -166,9 +163,14 @@ namespace PhoneBook.Controllers
         public JsonResult DeleteImage(int contactID)
         {
             ContactsService cs = new ContactsService();
-            Contact c = cs.GetByID(contactID);
-            c.ImagePath = "default.png";
-            cs.Save(c);
+            Contact contact = cs.GetByID(contactID);
+            ContactEditVM model = new ContactEditVM();
+
+            contact.ImagePath = "default.png";
+
+            cs.Save(contact);
+             
+
 
             return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
         }

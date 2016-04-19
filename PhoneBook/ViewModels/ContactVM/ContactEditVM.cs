@@ -28,7 +28,9 @@ namespace PhoneBook.ViewModels.ContactVM
         public string Adress { get; set; }
         public List<Phone> Phones { get; set; }
 
+        [Display(Name = "City")]
         public int CityID { get; set; }
+        [Display(Name = "Country")]
         public int CountryID { get; set; }
         public IEnumerable<SelectListItem> Countries { get; set; }
         public IEnumerable<SelectListItem> Cities { get; set; }

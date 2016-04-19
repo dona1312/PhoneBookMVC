@@ -7,7 +7,7 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm<ContactsController>(c => c.Edit(), FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm<ContactsController>(c => c.Edit(), FormMethod.Post, null, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -64,7 +64,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CountryID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.CountryID, Model.Countries, new { htmlAttributes = new { @class = "form-control" }, @id = "country"})
+                @Html.DropDownListFor(m => m.CountryID, Model.Countries, new { htmlAttributes = new { @class = "form-control" }, @id = "country" })
                 @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -72,7 +72,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CityID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.CityID, Model.Cities, "Select city", new { htmlAttributes = new { @class = "form-control" },@id="city" })
+                @Html.DropDownListFor(m => m.CityID, Model.Cities, "Select city", new { htmlAttributes = new { @class = "form-control" }, @id = "city" })
                 @Html.ValidationMessageFor(model => model.CityID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -99,7 +99,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" id="save-btn" />
             </div>
         </div>
 
@@ -124,12 +124,13 @@
                     success: function () {
                         $(".contact-photo").attr("src", "/Uploads/default.png");
                         $(".deleteImage ").hide();
+                        $("#ImageUrl").val("default.png");
                     },
                     error: function () { alert('error'); }
                 });
             });
             $('#country').change(function () {
-                var country=$(this).val();
+                var country = $(this).val();
                 $.ajax({
                     type: "Post",
                     url: '@Url.Action("GetCities")',

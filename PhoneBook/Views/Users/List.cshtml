@@ -14,17 +14,17 @@
 @using (Html.BeginForm())
 {
     <p>Search:</p>
-    @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control",@id="myID"}})
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Search" class="btn btn-default" />
+            <input type="submit" value="Search" class="btn btn-default"/>
         </div>
     </div>
 }
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("First name", "List", "Users", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, { "Search",Model.Search} }, null)
+            @Html.ActionLink("First name", "List", "Users", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, { "Search", Model.Search } }, null)
         </th>
         <th>
             @Html.ActionLink("Last name", "List", "Users", new RouteValueDictionary { { "SortOrder", Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" }, { "Search", Model.Search } }, null)
@@ -34,27 +34,28 @@
         </th>
     </tr>
 
-@foreach (var item in Model.UsersPaged) {
-    <tr>
+    @foreach (var item in Model.UsersPaged)
+    {
+        <tr>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Username)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @(Html.ActionLink<UsersController>("Edit", c => c.Edit(), new { id = item.ID })) |
-            @(Html.ActionLink<UsersController>("Delete", c => c.Delete(item.ID))) |
-        </td>
-    </tr>
-}
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @(Html.ActionLink<UsersController>("Edit", c => c.Edit(), new { id = item.ID })) |
+                @(Html.ActionLink<UsersController>("Delete", c => c.Delete(item.ID))) |
+            </td>
+        </tr>
+    }
 
 </table>
 <br />
@@ -64,4 +65,24 @@
     @Html.PagedListPager(Model.UsersPaged, page => Url.Action("List", new RouteValueDictionary { { "Page", page }, { "Search", Model.Search } }))
 </div>
 
-@Scripts.Render("~/bundles/jquery")
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('#myID').keydown(function () {
+
+                $.ajax({
+                    type: "Post",
+                    url: '@Url.Action("GetCities")',
+                    data: JSON.stringify({ contactID: $(this).attr('data-contactID') }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function () {
+                        alert('yeya');
+                    },
+                    error: function () { alert('error'); }
+                });
+            });
+        });
+    </script>
+}
