@@ -17,5 +17,7 @@ namespace PhoneBook
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Phone> Phones { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<City> Cities { get; set; }
     }
 }

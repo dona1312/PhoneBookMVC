@@ -33,7 +33,7 @@ namespace PhoneBook.Services
                 baseRepo.Save(item);
                 this.UnitOfWork.Commit();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.UnitOfWork.Rollback();
             }

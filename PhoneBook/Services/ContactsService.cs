@@ -48,6 +48,32 @@ namespace PhoneBook.Services
                 }
             }
         }
+        public IEnumerable<SelectListItem> GetAllCountries()
+        {
+
+            return new CountriesRepository().GetAll().Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.ID.ToString()
+            });
+        }
+        public IEnumerable<SelectListItem> GetAllCities()
+        {
+            return new CitiesRepository().GetAll().Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.ID.ToString()
+            });
+        }
+        public IEnumerable<SelectListItem> GetCitiesByCountry(int countryID)
+        {
+            return new CitiesRepository().GetAll(cities=>cities.CountryID==countryID).Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.ID.ToString()
+            });
+        }
+
     }
 
 }

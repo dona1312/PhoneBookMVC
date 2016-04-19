@@ -10,6 +10,7 @@ namespace PhoneBook.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            //AutomaticMigrationDataLossAllowed=true;
         }
 
         protected override void Seed(PhoneBook.AppContext context)

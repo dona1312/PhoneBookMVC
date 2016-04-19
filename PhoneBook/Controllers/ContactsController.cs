@@ -61,12 +61,17 @@ namespace PhoneBook.Controllers
                 {
                     return this.RedirectToAction(c => c.List(1));
                 }
+                model.Countries = contactService.GetAllCountries().Where(country => country.Value == contact.City.CountryID.ToString());
+                model.Cities = contactService.GetAllCities().Where(city => city.Value == contact.CityID.ToString());
             }
             else
             {
                 contact = new Contact();
                 contact.ImagePath = "default.png";
+                model.Countries = contactService.GetAllCountries();
+                model.Cities = contactService.GetAllCities();
             }
+
 
             model.ID = contact.ID;
             model.UserID = contact.UserID;
@@ -74,11 +79,14 @@ namespace PhoneBook.Controllers
             model.LastName = contact.LastName;
             model.Adress = contact.Adress;
             model.Phones = contact.Phones;
+            model.CityID = contact.CityID;
             model.ImageUrl = contact.ImagePath;
+
             if (model.ImageUrl == null)
             {
                 model.ImageUrl = "default.png";
             }
+
             model.Groups = contactService.GetSelectedGroups(contact.Groups);
 
             return View(model);
@@ -108,43 +116,55 @@ namespace PhoneBook.Controllers
             if (c == null)
                 return this.RedirectToAction(co => co.List(1));
 
-
             if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
             {
                 if (!model.ImageUpload.FileName.Contains(".jpg") || !model.ImageUpload.FileName.Contains(".png"))
                 {
                     ModelState.AddModelError("", "Image format not accepted!");
                 }
-                var uploadDir = "~/Uploads/";
+
+                //var uploadDir = "~/Uploads/";
+                //var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
+                //var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
+                //model.ImageUrl = model.ImageUpload.FileName;
+                //model.ImageUpload.SaveAs(imagePath);
+                var uploadDir = "/Uploads/";
                 var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
-                var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
+                model.ImageUrl = model.ImageUpload.FileName;
                 model.ImageUpload.SaveAs(imagePath);
             }
             if (!ModelState.IsValid)
             {
                 model.Groups = contactService.GetSelectedGroups(c.Groups);
+
                 return View(model);
             }
 
-        
+
             c.ID = model.ID;
             c.UserID = AuthenticationService.LoggedUser.ID;
             c.FirstName = model.FirstName;
             c.LastName = model.LastName;
             c.Adress = model.Adress;
             c.Phones = model.Phones;
+            c.CityID = model.CityID;
             c.ImagePath = model.ImageUrl;
+            c.CityID = model.CityID;
             contactService.SetSelectedGroups(c, model.SelectedGroups);
 
             contactService.Save(c);
             return this.RedirectToAction(co => co.List(1));
         }
+        public JsonResult GetCities(int countryID)
+        {
+            ContactsService contactService = new ContactsService();
+            ContactEditVM model = new ContactEditVM();
+            model.Cities = contactService.GetCitiesByCountry(countryID);
+
+            return Json(model.Cities.ToArray(), JsonRequestBehavior.AllowGet);
+        }
         public JsonResult DeleteImage(int contactID)
         {
-            //get contact
-            //remove  his image
-            //set default image
-            //return default image
             ContactsService cs = new ContactsService();
             Contact c = cs.GetByID(contactID);
             c.ImagePath = "default.png";

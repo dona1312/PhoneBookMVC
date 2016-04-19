@@ -15,7 +15,7 @@ namespace PhoneBook.ViewModels.ContactVM
         [Required(ErrorMessage = "Required field")]
         [StringLength(20)]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
-        [Display(Name ="First name")]
+        [Display(Name = "First name")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Required field")]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
@@ -28,9 +28,14 @@ namespace PhoneBook.ViewModels.ContactVM
         public string Adress { get; set; }
         public List<Phone> Phones { get; set; }
 
+        public int CityID { get; set; }
+        public int CountryID { get; set; }
+        public IEnumerable<SelectListItem> Countries { get; set; }
+        public IEnumerable<SelectListItem> Cities { get; set; }
+
         public string ImageUrl { get; set; }
         [DataType(DataType.Upload)]
-       public HttpPostedFileBase ImageUpload { get; set; }
+        public HttpPostedFileBase ImageUpload { get; set; }
 
         public IEnumerable<SelectListItem> Groups { get; set; }
         public string[] SelectedGroups { get; set; }
