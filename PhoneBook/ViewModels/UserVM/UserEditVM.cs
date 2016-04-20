@@ -25,7 +25,7 @@ namespace PhoneBook.ViewModels.UserVM
         [Required(ErrorMessage = "Field required")]
         [EmailAddress]
         public string Email { get; set; }
-
+       
         public List<Contact> Contacts { get; set; }
     }
 }

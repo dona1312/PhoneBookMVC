@@ -26,8 +26,8 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @(Html.ActionLink<GroupsController>("Edit", c => c.Edit(), new { id = item.ID }))|
-                @(Html.ActionLink<GroupsController>("Delete", c => c.Delete(item.ID)))|
+                @(Html.ActionLink<GroupsController>("Edit", c => c.Edit(), new { id = item.ID }, new { @class = "btn btn-info waves-effect waves-light" }))|
+                @(Html.ActionLink<GroupsController>("Delete", c => c.Delete(item.ID),null,new { @class = "btn btn-danger waves-effect waves-light" }))|
                 <a href="#" class="showContacts">Show Contacts</a>
             </td>
 

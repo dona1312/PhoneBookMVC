@@ -25,6 +25,8 @@ namespace PhoneBook.ViewModels.AccountVM
         [StringLength(30, ErrorMessage = "Max 20 symbols")]
         [EmailAddress]
         public string Email { get; set; }
+
+
         public List<Contact> Contacts { get; set; }
     }
 }

@@ -30,10 +30,15 @@ namespace PhoneBook.Controllers
             TryUpdateModel(model);
 
             AuthenticationService.Authenticate(model.Username, model.Password);
+
             if (AuthenticationService.LoggedUser != null)
             {
+                if (model.IsRememebered)
+                {
+                    CookieService.CreateCookie();
+                }
                 return this.RedirectToAction<ContactsController>(c => c.List(1));
-              
+
             }
             else
             {
@@ -103,7 +108,7 @@ namespace PhoneBook.Controllers
         }
         public ActionResult Logout()
         {
-            AuthenticationService.LoggedUser = null;
+            AuthenticationService.Logout();
             return this.RedirectToAction(c => c.Login());
         }
     }

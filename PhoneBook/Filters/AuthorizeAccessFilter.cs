@@ -7,15 +7,27 @@ using System.Web.Mvc;
 
 namespace PhoneBook.Filters
 {
-    public class AuthorizeAccessFilter:AuthorizeAttribute
+    public class AuthorizeAccessFilter : AuthorizeAttribute
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            if (AuthenticationService.LoggedUser!=null)
+            HttpCookie cookie = HttpContext.Current.Request.Cookies["rememberMe"];
+            if (cookie != null && AuthenticationService.LoggedUser == null)
+            {
+                if (cookie.Expires <= DateTime.Now)
+                {
+                    AuthenticationService.Logout();
+                 
+                }
+                AuthenticationService.AuthenticateByCookie(cookie);
+            }
+
+            if (AuthenticationService.LoggedUser != null)
             {
                 HttpContext.Current.Response.Redirect("~/Contacts/List");
                 filterContext.Result = new EmptyResult();
             }
+
         }
     }
 }

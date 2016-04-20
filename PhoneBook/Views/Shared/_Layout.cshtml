@@ -8,27 +8,30 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Phone Book", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    @*<li>@Html.ActionLink("Users", "List", "Users")</li>*@
-                    <li>@Html.ActionLink("Contacts", "List", "Contacts")</li>
-                    <li>@Html.ActionLink("Groups", "List", "Groups")</li>
-                    @if (PhoneBook.Services.AuthenticationService.LoggedUser != null)
-                    {
-                        <li>@Html.ActionLink("Log out", "Logout", "Account")</li>
-                    }
-                </ul>
+
+    <div class="navbar default-color">
+        <div class="container-fluid">
+            <div class="container body-content">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Phone Book", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        @*<li>@Html.ActionLink("Users", "List", "Users")</li>*@
+                        <li>@Html.ActionLink("Contacts", "List", "Contacts")</li>
+                        <li>@Html.ActionLink("Groups", "List", "Groups")</li>
+                        @if (PhoneBook.Services.AuthenticationService.LoggedUser != null)
+                        {
+                            <li>@Html.ActionLink("Log out", "Logout", "Account")</li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

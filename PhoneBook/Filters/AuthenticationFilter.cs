@@ -11,10 +11,10 @@ namespace PhoneBook.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (AuthenticationService.LoggedUser==null)
+            if (AuthenticationService.LoggedUser == null)
             {
-                filterContext.HttpContext.Response.Redirect("~/Account/Login?RedirectUrl="+filterContext.HttpContext.Request.Url);
-                filterContext.Result =new  EmptyResult();
+                filterContext.HttpContext.Response.Redirect("~/Account/Login?RedirectUrl=" + filterContext.HttpContext.Request.Url);
+                filterContext.Result = new EmptyResult();
             }
         }
     }
