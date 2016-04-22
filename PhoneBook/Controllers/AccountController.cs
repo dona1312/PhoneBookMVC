@@ -1,4 +1,5 @@
-﻿using PhoneBook.Filters;
+﻿using AutoMapper;
+using PhoneBook.Filters;
 using PhoneBook.Models;
 using PhoneBook.Services;
 using PhoneBook.ViewModels.AccountVM;
@@ -73,15 +74,12 @@ namespace PhoneBook.Controllers
                 return View(model);
             }
 
-            user.ID = model.ID;
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.Username = model.Username;
+            Mapper.Map(model, user);
+
             user.Password = Guid.NewGuid().ToString();
-            user.Email = model.Email;
-            user.Contacts = model.Contacts;
             userService.Save(user);
             PhoneBook.Services.EmailService.SendEmail(user);
+
             return this.RedirectToAction(c => c.Login());
 
         }

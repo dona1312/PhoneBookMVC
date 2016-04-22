@@ -35,7 +35,7 @@ namespace PhoneBook.ViewModels.ContactVM
         public IEnumerable<SelectListItem> Countries { get; set; }
         public IEnumerable<SelectListItem> Cities { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string ImagePath { get; set; }
         [DataType(DataType.Upload)]
         public HttpPostedFileBase ImageUpload { get; set; }
 

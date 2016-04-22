@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using PhoneBook.Filters;
 using System.Web.Mvc.Expressions;
+using AutoMapper;
 
 namespace PhoneBook.Controllers
 {
@@ -69,14 +70,7 @@ namespace PhoneBook.Controllers
             }
 
 
-
-            model.ID = user.ID;
-            model.FirstName = user.FirstName;
-            model.LastName = user.LastName;
-            model.Username = user.Username;
-            model.Password = user.Password;
-            model.Contacts = user.Contacts;
-            model.Email = user.Email;
+            Mapper.Map(user,model);
 
             return View(model);
 
@@ -101,13 +95,7 @@ namespace PhoneBook.Controllers
             if (u == null)
                 return this.RedirectToAction(c => c.List(1));
 
-            u.ID = model.ID;
-            u.FirstName = model.FirstName;
-            u.LastName = model.LastName;
-            u.Username = model.Username;
-            u.Password = model.Password;
-            u.Contacts = model.Contacts;
-            u.Email = model.Email;
+            Mapper.Map(model, u);
 
             userService.Save(u);
             return RedirectToAction("List");

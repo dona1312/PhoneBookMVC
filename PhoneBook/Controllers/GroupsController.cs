@@ -1,4 +1,5 @@
-﻿using PhoneBook.Filters;
+﻿using AutoMapper;
+using PhoneBook.Filters;
 using PhoneBook.Models;
 using PhoneBook.Repositories;
 using PhoneBook.Services;
@@ -55,12 +56,9 @@ namespace PhoneBook.Controllers
             }
             else
                 group = new Group();
-            
-            model.ID = group.ID;
-            model.Name = group.Name;
-            model.Contacts = group.Contacts;
 
-         
+            Mapper.Map(group,model);
+
 
             return View(model);
         }
@@ -83,10 +81,7 @@ namespace PhoneBook.Controllers
 
             if (g == null)
                 return this.RedirectToAction(c => c.List());
-
-            g.ID = model.ID;
-            g.Name = model.Name;
-            g.Contacts = model.Contacts;
+            Mapper.Map(model,g);
 
            
             groupService.Save(g);

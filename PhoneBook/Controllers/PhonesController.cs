@@ -1,4 +1,5 @@
-﻿using PhoneBook.Filters;
+﻿using AutoMapper;
+using PhoneBook.Filters;
 using PhoneBook.Models;
 using PhoneBook.Repositories;
 using PhoneBook.Services;
@@ -46,10 +47,7 @@ namespace PhoneBook.Controllers
             else
                 phone = new Phone();
 
-            model.ID = phone.ID;
-            model.ContactID = phone.ContactID;
-            model.Number = phone.Number;
-            model.PhoneType = phone.PhoneType;
+            Mapper.Map(phone,model);
 
             return View(model);
         }
@@ -74,10 +72,7 @@ namespace PhoneBook.Controllers
                 p = new Phone();
 
 
-            p.ID = model.ID;
-            p.ContactID = model.ContactID;
-            p.Number = model.Number;
-            p.PhoneType = model.PhoneType;
+            Mapper.Map(model,p);
 
             phoneService.Save(p);
             return this.RedirectToAction( c => c.List(), new { contactID = model.ContactID });

@@ -15,8 +15,8 @@
         <hr />
 
         <div class="photo-cont">
-            <img class="contact-photo" src="/Uploads/@Model.ImageUrl" alt="Image" />
-            @if (Model.ImageUrl != "default.png")
+            <img class="contact-photo" src="/Uploads/@Model.ImagePath" alt="Image" />
+            @if (Model.ImagePath != "default.png")
             {
 
                 <a href="#" class="deleteImage" data-contactID=@Model.ID>Delete image</a>
@@ -25,7 +25,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.UserID)
-        @Html.HiddenFor(model => model.ImageUrl)
+        @Html.HiddenFor(model => model.ImagePath)
 
 
         <div class="form-group">
@@ -124,7 +124,7 @@
                     success: function () {
                         $(".contact-photo").attr("src", "/Uploads/default.png");
                         $(".deleteImage ").hide();
-                        $("#ImageUrl").val("default.png");
+                        $("#ImagePath").val("default.png");
                     },
                     error: function () { alert('error'); }
                 });

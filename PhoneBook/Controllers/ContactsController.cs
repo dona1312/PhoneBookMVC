@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 
 namespace PhoneBook.Controllers
 {
@@ -72,19 +73,11 @@ namespace PhoneBook.Controllers
                 model.Cities = contactService.GetAllCities();
             }
 
+            Mapper.Map(contact,model);
 
-            model.ID = contact.ID;
-            model.UserID = contact.UserID;
-            model.FirstName = contact.FirstName;
-            model.LastName = contact.LastName;
-            model.Adress = contact.Adress;
-            model.Phones = contact.Phones;
-            model.CityID = contact.CityID;
-            model.ImageUrl = contact.ImagePath;
-
-            if (model.ImageUrl == null)
+            if (model.ImagePath == null)
             {
-                model.ImageUrl = "default.png";
+                model.ImagePath = "default.png";
             }
 
             model.Groups = contactService.GetSelectedGroups(contact.Groups);
@@ -124,10 +117,10 @@ namespace PhoneBook.Controllers
                     ModelState.AddModelError("", "Image format not accepted!");
                 }
 
-               
+
                 var uploadDir = "/Uploads/";
                 var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
-                model.ImageUrl = model.ImageUpload.FileName;
+                model.ImagePath = model.ImageUpload.FileName;
                 model.ImageUpload.SaveAs(imagePath);
             }
             if (!ModelState.IsValid)
@@ -137,16 +130,9 @@ namespace PhoneBook.Controllers
                 return View(model);
             }
 
-
-            c.ID = model.ID;
+            Mapper.Map(model,c);
             c.UserID = AuthenticationService.LoggedUser.ID;
-            c.FirstName = model.FirstName;
-            c.LastName = model.LastName;
-            c.Adress = model.Adress;
-            c.Phones = model.Phones;
-            c.CityID = model.CityID;
-            c.ImagePath = model.ImageUrl;
-            c.CityID = model.CityID;
+
             contactService.SetSelectedGroups(c, model.SelectedGroups);
 
             contactService.Save(c);
@@ -169,7 +155,7 @@ namespace PhoneBook.Controllers
             contact.ImagePath = "default.png";
 
             cs.Save(contact);
-             
+
             return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Delete(int? id)
