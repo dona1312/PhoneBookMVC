@@ -28,7 +28,8 @@ namespace PhoneBook.Controllers
             model.Contacts = contactService.GetAll().Where(c => c.UserID == AuthenticationService.LoggedUser.ID).ToList();
             if (model.Search != null)
             {
-                model.Contacts = model.Contacts.Where(c => c.FirstName.Contains(model.Search) || c.LastName.Contains(model.Search) || c.Adress.Contains(model.Search)).ToList();
+                //model.Contacts = model.Contacts.Where(c => c.FirstName.Contains(model.Search) || c.LastName.Contains(model.Search) || c.Adress.Contains(model.Search)).ToList();
+                model.Contacts = model.Contacts.Where(c => (c.FirstName.Trim() + c.LastName.Trim()).Trim().ToLower().Contains(model.Search.Replace(" ",string.Empty).ToLower())).ToList();
             }
 
             switch (model.SortOrder)
@@ -62,23 +63,27 @@ namespace PhoneBook.Controllers
                 {
                     return this.RedirectToAction(c => c.List(1));
                 }
-                model.Countries = contactService.GetAllCountries().Where(country => country.Value == contact.City.CountryID.ToString());
-                model.Cities = contactService.GetAllCities().Where(city => city.Value == contact.CityID.ToString());
+               
+                model.CountryID = contact.City.CountryID;
+                //model.Cities = contactService.GetAllCities().Where(city => city.Value == contact.CityID.ToString());
             }
             else
             {
                 contact = new Contact();
                 contact.ImagePath = "default.png";
-                model.Countries = contactService.GetAllCountries();
-                model.Cities = contactService.GetAllCities();
+
+                model.CountryID = int.Parse(contactService.GetAllCountries().FirstOrDefault().Value);
+               
             }
 
-            Mapper.Map(contact,model);
+            Mapper.Map(contact, model);
 
             if (model.ImagePath == null)
             {
                 model.ImagePath = "default.png";
             }
+            model.Countries = contactService.GetAllCountries();
+            model.Cities = contactService.GetCitiesByCountry(model.CountryID);
 
             model.Groups = contactService.GetSelectedGroups(contact.Groups);
 
@@ -130,7 +135,7 @@ namespace PhoneBook.Controllers
                 return View(model);
             }
 
-            Mapper.Map(model,c);
+            Mapper.Map(model, c);
             c.UserID = AuthenticationService.LoggedUser.ID;
 
             contactService.SetSelectedGroups(c, model.SelectedGroups);
