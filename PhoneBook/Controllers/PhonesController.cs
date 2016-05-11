@@ -23,6 +23,11 @@ namespace PhoneBook.Controllers
             PhoneListVM model = new PhoneListVM();
             TryUpdateModel(model);
 
+            if (model.ContactID==null)
+            {
+                return ControllerExtensions.RedirectToAction<ContactsController>(this, c => c.List(1));
+            }
+            
             model.Contact = phoneService.GetContact(model.ContactID.Value);
             model.Phones = phoneService.GetAll().Where(p => p.ContactID == model.ContactID.Value).ToList();
            

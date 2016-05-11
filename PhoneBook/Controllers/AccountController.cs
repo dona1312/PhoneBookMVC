@@ -65,7 +65,7 @@ namespace PhoneBook.Controllers
             PhoneBook.Models.User user = new Models.User();
             UsersService userService = new UsersService();
 
-            if (userService.CheckUsernameOrMail(user) != null)
+            if (userService.CheckUsernameOrMail(model) != null)
             {
                 ModelState.AddModelError("", "Username or email already exists!");
             }
@@ -75,7 +75,7 @@ namespace PhoneBook.Controllers
             }
 
             Mapper.Map(model, user);
-
+          
             user.Password = Guid.NewGuid().ToString();
             userService.Save(user);
             PhoneBook.Services.EmailService.SendEmail(user);

@@ -1,5 +1,6 @@
 ﻿using PhoneBook.Models;
 using PhoneBook.Repositories;
+using PhoneBook.ViewModels.AccountVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace PhoneBook.Services
         public UsersService() : base() { }
         public UsersService(UnitOfWork unit) : base(unit) { }
         
-        public User CheckUsernameOrMail(User user)
+        public User CheckUsernameOrMail(AccountEditVM user)
         {
                 UsersService userService = new UsersService();
-            User userMail = userService.GetAll(u => u.Email == user.Email || u.Username == user.Username.ToLower()).FirstOrDefault();
+            User userMail = userService.GetAll().FirstOrDefault((u => u.Email == user.Email || u.Username == user.Username.ToLower()));
             if (userMail != null)
             {
-                return user;
+                return userMail;
             }
             else
                 return null;

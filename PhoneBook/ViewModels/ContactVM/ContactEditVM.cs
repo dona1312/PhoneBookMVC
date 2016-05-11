@@ -37,6 +37,7 @@ namespace PhoneBook.ViewModels.ContactVM
 
         public string ImagePath { get; set; }
         [DataType(DataType.Upload)]
+        [Display(Name = "Image")]
         public HttpPostedFileBase ImageUpload { get; set; }
 
         public IEnumerable<SelectListItem> Groups { get; set; }

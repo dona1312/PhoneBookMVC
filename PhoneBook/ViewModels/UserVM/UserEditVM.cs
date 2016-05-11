@@ -12,9 +12,11 @@ namespace PhoneBook.ViewModels.UserVM
         public int ID { get; set; }
         [Required(ErrorMessage ="Field required")]
         [StringLength(20)]
+        [Display(Name = "First name")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Field required")]
         [StringLength(20)]
+        [Display(Name = "Last name")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "Field required")]
         [StringLength(20)]

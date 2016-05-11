@@ -87,24 +87,6 @@ namespace PhoneBook.Controllers
             groupService.Save(g);
             return this.RedirectToAction(c => c.List());
         }
-        //public ActionResult RemoveFromGroup()
-        //{
-        //    UnitOfWork unit = new UnitOfWork();
-        //    GroupsService groupService = new GroupsService(unit);
-        //    GroupEditVM model = new GroupEditVM();
-        //    TryUpdateModel(model);
-
-        //    if (model.GroupID.HasValue)
-        //    {
-        //        Group grou = groupService.GetByID(model.GroupID.Value);
-        //        model.Contacts = grou.Contacts;
-        //        Contact co = model.Contacts.Find(c=>c.ID==model.ContactID);
-        //        grou.Contacts.Remove(co);
-        //        groupService.Save(grou);
-        //    }
-
-        //    return RedirectToAction("List");
-        //}
         public JsonResult RemoveFromGroup(int GroupID,int ContactID)
         {
             UnitOfWork unitOfWork = new UnitOfWork();

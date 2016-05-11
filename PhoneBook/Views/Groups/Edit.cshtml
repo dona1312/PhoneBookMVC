@@ -1,11 +1,19 @@
 ﻿@model PhoneBook.ViewModels.GroupVM.GroupEditVM
 
 @{
-    ViewBag.Title = "Edit";
+    if (Model.ID == 0)
+    {
+        ViewBag.Title = "Create";
+        <h3>Create</h3>
+    }
+    else
+    {
+        ViewBag.Title = "Edit";
+        <h3>Edit</h3>
+    }
+   
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Edit</h2>
 
 
 @using (Html.BeginForm())

@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>List</h2>
+<h3>List</h3>
 
 <p>
     @(Html.ActionLink<ContactsController>("Create New", c => c.Edit()))
@@ -50,8 +50,8 @@
             </td>
             <td>
               
-                @(Html.ActionLink<ContactsController>("Edit", c => c.Edit(), new { id = item.ID },  new { @class = "btn btn-info waves-effect waves-light" } )) |
-                @(Html.ActionLink<ContactsController>("Delete", c => c.Delete(item.ID), null,new { @class = "btn btn-danger waves-effect waves-light" } )) |
+                @(Html.ActionLink<ContactsController>("Edit", c => c.Edit(), new { id = item.ID },  new { @class = "btn btn-info waves-effect waves-light" } )) 
+                @(Html.ActionLink<ContactsController>("Delete", c => c.Delete(item.ID), null,new { @class = "btn btn-danger waves-effect waves-light" } )) 
                 @(Html.ActionLink<PhonesController>("View Phones", c => c.List(), new { ContactID = item.ID }, new { @class = "btn btn-default waves-effect waves-light" }))
             </td>
         </tr>

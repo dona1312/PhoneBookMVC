@@ -11,6 +11,18 @@
     white-space: normal;
 }
 
+.contact-photo {
+    width: 300px;
+    height: 300px;
+    margin: 0 0 20px 106px; 
+    border-radius:20%;
+}
+
+.deleteImage {
+    display: inherit;
+    margin: 0 0 10px 200px;
+   
+}
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
