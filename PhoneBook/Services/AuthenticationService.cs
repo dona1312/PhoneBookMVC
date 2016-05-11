@@ -28,9 +28,10 @@ namespace PhoneBook.Services
         }
         public static void Logout()
         {
-            HttpCookie cookie = HttpContext.Current.Request.Cookies["rememberMe"];
-            cookie.Expires = DateTime.Now.AddMinutes(-1);
-            HttpContext.Current.Response.Cookies.Set(cookie);
+            if (LoggedUser.RememberMeHash!=null)
+            {
+                CookieService.DeleteCookie();
+            }
             AuthenticationService.LoggedUser = null;
         }
     }

@@ -28,8 +28,7 @@ namespace PhoneBook.Controllers
             model.Contacts = contactService.GetAll().Where(c => c.UserID == AuthenticationService.LoggedUser.ID).ToList();
             if (model.Search != null)
             {
-                //model.Contacts = model.Contacts.Where(c => c.FirstName.Contains(model.Search) || c.LastName.Contains(model.Search) || c.Adress.Contains(model.Search)).ToList();
-                model.Contacts = model.Contacts.Where(c => (c.FirstName.Trim() + c.LastName.Trim()).Trim().ToLower().Contains(model.Search.Replace(" ",string.Empty).ToLower())).ToList();
+                model.Contacts = model.Contacts.Where(c => (c.FirstName.Trim() + c.LastName.Trim()).Trim().ToLower().Contains(model.Search.Replace(" ", string.Empty).ToLower()) || c.Adress.Contains(model.Search)).ToList();
             }
 
             switch (model.SortOrder)
@@ -63,9 +62,8 @@ namespace PhoneBook.Controllers
                 {
                     return this.RedirectToAction(c => c.List(1));
                 }
-               
+
                 model.CountryID = contact.City.CountryID;
-                //model.Cities = contactService.GetAllCities().Where(city => city.Value == contact.CityID.ToString());
             }
             else
             {
@@ -73,7 +71,7 @@ namespace PhoneBook.Controllers
                 contact.ImagePath = "default.png";
 
                 model.CountryID = int.Parse(contactService.GetAllCountries().FirstOrDefault().Value);
-               
+
             }
 
             Mapper.Map(contact, model);
@@ -111,9 +109,6 @@ namespace PhoneBook.Controllers
             else
                 c = new Contact();
 
-            if (c == null)
-                return this.RedirectToAction(co => co.List(1));
-
             if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
             {
                 var ext = Path.GetExtension(model.ImageUpload.FileName);
@@ -121,16 +116,21 @@ namespace PhoneBook.Controllers
                 {
                     ModelState.AddModelError("", "Image format not accepted!");
                 }
+                else
+                {
+                    var uploadDir = "/Uploads/";
+                    var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
+                    model.ImagePath = model.ImageUpload.FileName;
+                    model.ImageUpload.SaveAs(imagePath);
+                }
 
 
-                var uploadDir = "/Uploads/";
-                var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
-                model.ImagePath = model.ImageUpload.FileName;
-                model.ImageUpload.SaveAs(imagePath);
             }
             if (!ModelState.IsValid)
             {
                 model.Groups = contactService.GetSelectedGroups(c.Groups);
+                model.Countries = contactService.GetAllCountries();
+                model.Cities = contactService.GetCitiesByCountry(model.CountryID);
 
                 return View(model);
             }

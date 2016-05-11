@@ -12,27 +12,27 @@
 </p>
 @using (Html.BeginForm<ContactsController>(c => c.List(1), FormMethod.Get))
 {
-   <p> Search:</p>
-    @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" } })
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Search" class="btn btn-default" />
+    <p> Search:</p>
+        @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" } })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
         </div>
-    </div>
 }
 <table class="table">
     <tr>
 
         <th>
-           @(Html.ActionLink<ContactsController>("First Name", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, null))
+            @(Html.ActionLink<ContactsController>("First Name", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, null))
         </th>
         <th>
-          @(Html.ActionLink<ContactsController>("Last Name", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" }, null))
+            @(Html.ActionLink<ContactsController>("Last Name", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" }, null))
         </th>
         <th>
             @(Html.ActionLink<ContactsController>("Adress", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "adress_asc" ? "adress_desc" : "adress_asc" }, null))
         </th>
-        <th></th> 
+        <th></th>
     </tr>
 
     @foreach (var item in Model.Contacts)
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Adress)
             </td>
             <td>
-              
-                @(Html.ActionLink<ContactsController>("Edit", c => c.Edit(), new { id = item.ID },  new { @class = "btn btn-info waves-effect waves-light" } )) 
-                @(Html.ActionLink<ContactsController>("Delete", c => c.Delete(item.ID), null,new { @class = "btn btn-danger waves-effect waves-light" } )) 
+
+                @(Html.ActionLink<ContactsController>("Edit", c => c.Edit(), new { id = item.ID }, new { @class = "btn btn-info waves-effect waves-light" }))
+                @(Html.ActionLink<ContactsController>("Delete", c => c.Delete(item.ID), null, new { @class = "btn btn-danger waves-effect waves-light" }))
                 @(Html.ActionLink<PhonesController>("View Phones", c => c.List(), new { ContactID = item.ID }, new { @class = "btn btn-default waves-effect waves-light" }))
             </td>
         </tr>

@@ -20,21 +20,30 @@ namespace PhoneBook.Services
 
                 rememberMeCookie.Name = "rememberMe";
                 rememberMeCookie.Value = Guid.NewGuid().ToString();
-                rememberMeCookie.Expires = DateTime.Now.AddMinutes(1);// rememberMeCookie.Expires.AddMinutes(5);
-                
+                rememberMeCookie.Expires = DateTime.Now.AddMinutes(10);
+
                 HttpContext.Current.Response.Cookies.Add(rememberMeCookie);
 
                 user.RememberMeHash = rememberMeCookie.Value;
-                user.DateExpire = rememberMeCookie.Expires;
+                user.DateExpire = DateTime.Now.AddMinutes(10);
 
                 service.Save(user);
-                
+
             }
-            
+
         }
         public static void DeleteCookie()
         {
+            HttpCookie cookie = new HttpCookie("rememberMe");
+            cookie.Expires = DateTime.Now.AddMinutes(-10);
+            HttpContext.Current.Request.Cookies.Set(cookie);
 
+            UsersService service = new UsersService();
+            User user = service.GetByID(AuthenticationService.LoggedUser.ID);
+            user.RememberMeHash = null;
+            user.DateExpire = null;
+
+            service.Save(user);
         }
     }
 }

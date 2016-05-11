@@ -11,23 +11,11 @@ namespace PhoneBook.Filters
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            HttpCookie cookie = HttpContext.Current.Request.Cookies["rememberMe"];
-            if (cookie != null && AuthenticationService.LoggedUser == null)
-            {
-                if (cookie.Expires <= DateTime.Now)
-                {
-                    AuthenticationService.Logout();
-                 
-                }
-                AuthenticationService.AuthenticateByCookie(cookie);
-            }
-
             if (AuthenticationService.LoggedUser != null)
             {
                 HttpContext.Current.Response.Redirect("~/Contacts/List");
                 filterContext.Result = new EmptyResult();
             }
-
         }
     }
 }

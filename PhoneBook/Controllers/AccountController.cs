@@ -78,7 +78,7 @@ namespace PhoneBook.Controllers
           
             user.Password = Guid.NewGuid().ToString();
             userService.Save(user);
-            PhoneBook.Services.EmailService.SendEmail(user);
+            PhoneBook.Services.EmailService.SendEmail(user,ControllerContext);
 
             return this.RedirectToAction(c => c.Login());
 

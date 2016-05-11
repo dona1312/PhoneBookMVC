@@ -11,9 +11,16 @@ namespace PhoneBook.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+
+            HttpCookie cookie = HttpContext.Current.Request.Cookies["rememberMe"];
+            if (cookie != null && AuthenticationService.LoggedUser == null)
+            {
+                AuthenticationService.AuthenticateByCookie(cookie);
+            }
+
             if (AuthenticationService.LoggedUser == null)
             {
-                filterContext.HttpContext.Response.Redirect("~/Account/Login?RedirectUrl=" + filterContext.HttpContext.Request.Url);
+                filterContext.HttpContext.Response.Redirect("~/Account/Login?redirectUrl="+filterContext.HttpContext.Request.Url);
                 filterContext.Result = new EmptyResult();
             }
         }
