@@ -36,3 +36,14 @@ select,
 textarea {
     max-width: 280px;
 }
+.container.body-content p{
+    color:white;
+    font-size:15pt;
+}
+footer {
+    background-color: #2BBBAD;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
