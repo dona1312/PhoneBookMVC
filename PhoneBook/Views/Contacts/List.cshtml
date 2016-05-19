@@ -12,7 +12,6 @@
 </p>
 @using (Html.BeginForm<ContactsController>(c => c.List(), FormMethod.Get))
 {
-    <p> Search:</p>
     @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" ,placeholder="Search..."} })
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -20,9 +19,14 @@
         </div>
     </div>
 }
+@if (Model.Contacts.Count ==0)
+{
+    <div class="alert alert-info">No contacts to show. You can add new contact by clicking on "Create new" link.</div>
+}
+else
+{
 <table class="table">
     <tr>
-
         <th>
             @(Html.ActionLink<ContactsController>("First Name", c => c.List(), new { Search = Model.Search, SortOrder = Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, null))
         </th>
@@ -35,6 +39,7 @@
         <th></th>
     </tr>
 
+    
     @foreach (var item in Model.Contacts)
     {
         <tr>
@@ -62,3 +67,4 @@
     @Html.PagedListPager(Model.Contacts, page => (@Url.Action<ContactsController>(c => c.List(), new { Page = page, Search = Model.Search, PageSize = Model.PageSize })))
     Page @(Model.Contacts.PageCount < Model.Contacts.PageNumber ? 0 : Model.Contacts.PageNumber) of @Model.Contacts.PageCount
 </div>
+}

@@ -27,8 +27,7 @@ namespace PhoneBook.Controllers
             TryUpdateModel(model);
 
             List<Contact> contacts=contactService.GetAll().Where(c => c.UserID == AuthenticationService.LoggedUser.ID).ToList();
-        
-
+            
             if (model.Search != null)
             {
                 contacts = contacts.Where(c => (c.FirstName.Trim() + c.LastName.Trim()).Trim().ToLower().Contains(model.Search.Replace(" ", string.Empty).ToLower()) || c.Adress.Contains(model.Search)).ToList();

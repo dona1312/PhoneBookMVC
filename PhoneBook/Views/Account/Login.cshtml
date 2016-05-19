@@ -7,7 +7,7 @@
 
 <h3>Home</h3>
 
-
+<p>Enter your e-mail here,so you can reset your password! After submitting, check your e-mail!</p>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -48,6 +48,9 @@
 
 <div>
     @(Html.ActionLink<AccountController>("Not registered yet? Register now!", c => c.Register()))
+</div>
+<div>
+    @(Html.ActionLink<AccountController>("Forgotten password", c => c.Reset()))
 </div>
 
 @section Scripts {

@@ -87,7 +87,7 @@ namespace PhoneBook.Controllers
         public ActionResult Verify(int userID)
         {
             AccountVerifyVM model = new AccountVerifyVM();
-            if (userID<int.MinValue || userID>int.MaxValue)
+            if (userID < int.MinValue || userID > int.MaxValue)
             {
                 ModelState.AddModelError("", "There is no such user!");
             }
@@ -126,6 +126,30 @@ namespace PhoneBook.Controllers
             }
 
             return this.RedirectToAction(c => c.Login());
+        }
+        public ActionResult Reset(string str)
+        {
+            AccountResetVM model = new AccountResetVM();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeAccessFilter]
+        public ActionResult Reset()
+        {
+            AccountResetVM model = new AccountResetVM();
+            TryUpdateModel(model);
+
+            UsersService usersService = new UsersService();
+            User user = usersService.GetAll().FirstOrDefault(u => u.Email == model.Email);
+            user.Password = Guid.NewGuid().ToString();
+
+            usersService.Save(user);
+
+            PhoneBook.Services.EmailService.SendEmail(user, ControllerContext);
+
+
+            return View(model);
         }
         public ActionResult Logout()
         {
