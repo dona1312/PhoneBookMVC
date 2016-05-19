@@ -8,6 +8,8 @@ namespace PhoneBook.Models
     public class Group:BaseModel
     {
         public string Name { get; set; }
+
         public virtual List<Contact> Contacts { get; set; }
+
     }
 }

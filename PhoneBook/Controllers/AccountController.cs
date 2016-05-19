@@ -38,7 +38,7 @@ namespace PhoneBook.Controllers
                 {
                     CookieService.CreateCookie();
                 }
-                return this.RedirectToAction<ContactsController>(c => c.List(1));
+                return this.RedirectToAction<ContactsController>(c => c.List());
 
             }
             else
@@ -75,18 +75,22 @@ namespace PhoneBook.Controllers
             }
 
             Mapper.Map(model, user);
-          
+
             user.Password = Guid.NewGuid().ToString();
             userService.Save(user);
-            PhoneBook.Services.EmailService.SendEmail(user,ControllerContext);
+            PhoneBook.Services.EmailService.SendEmail(user, ControllerContext);
 
             return this.RedirectToAction(c => c.Login());
 
         }
         [AuthorizeAccessFilter]
-        public ActionResult Verify()
+        public ActionResult Verify(int userID)
         {
             AccountVerifyVM model = new AccountVerifyVM();
+            if (userID<int.MinValue || userID>int.MaxValue)
+            {
+                ModelState.AddModelError("", "There is no such user!");
+            }
             return View(model);
         }
         [HttpPost]
@@ -99,8 +103,27 @@ namespace PhoneBook.Controllers
             UsersService userService = new UsersService();
 
             User user = userService.GetByID(userID);
-            user.Password = model.Password;
-            userService.Save(user);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "There is no such user!");
+            }
+            else
+            {
+                Guid guidValue = Guid.NewGuid();
+                if (!Guid.TryParse(key, out guidValue))
+                {
+                    ModelState.AddModelError("", "Inavlid key! Please check your e-mail for correct activation link!");
+                }
+                if (user.Password == key)
+                {
+                    user.Password = model.Password;
+                    userService.Save(user);
+                }
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
             return this.RedirectToAction(c => c.Login());
         }

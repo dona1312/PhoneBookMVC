@@ -11,13 +11,13 @@ namespace PhoneBook.ViewModels.ContactVM
 {
     public class ContactListVM
     {
-        public List<Contact> Contacts { get; set; }
         public string SortOrder { get; set; }
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         
         public string Search { get; set; }
-        public IPagedList<Contact> ContactsPaged { get; set; }
-        //public int? Page { get; set; }
-        //public int PageSize { get; set; }
+        public IPagedList<Contact> Contacts{ get; set; }
+
+        public int? Page { get; set; }
+        public int PageSize { get; set; }
     }
 }

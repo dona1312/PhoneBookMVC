@@ -20,34 +20,42 @@ namespace PhoneBook.Controllers
     {
     
         // GET: Contacts
-        public ActionResult List(int? page)
+        public ActionResult List()
         {
             ContactsService contactService = new ContactsService();
             ContactListVM model = new ContactListVM();
             TryUpdateModel(model);
 
-            model.Contacts = contactService.GetAll().Where(c => c.UserID == AuthenticationService.LoggedUser.ID).ToList();
+            List<Contact> contacts=contactService.GetAll().Where(c => c.UserID == AuthenticationService.LoggedUser.ID).ToList();
+        
+
             if (model.Search != null)
             {
-                model.Contacts = model.Contacts.Where(c => (c.FirstName.Trim() + c.LastName.Trim()).Trim().ToLower().Contains(model.Search.Replace(" ", string.Empty).ToLower()) || c.Adress.Contains(model.Search)).ToList();
+                contacts = contacts.Where(c => (c.FirstName.Trim() + c.LastName.Trim()).Trim().ToLower().Contains(model.Search.Replace(" ", string.Empty).ToLower()) || c.Adress.Contains(model.Search)).ToList();
             }
 
             switch (model.SortOrder)
             {
 
-                case "fname_desc": model.Contacts = model.Contacts.OrderByDescending(c => c.FirstName).ToList(); break;
-                case "lname_asc": model.Contacts = model.Contacts.OrderBy(c => c.LastName).ToList(); break;
-                case "lname_desc": model.Contacts = model.Contacts.OrderByDescending(c => c.LastName).ToList(); break;
-                case "adress_asc": model.Contacts = model.Contacts.OrderBy(c => c.Adress).ToList(); break;
-                case "adress_des": model.Contacts = model.Contacts.OrderByDescending(c => c.Adress).ToList(); break;
+                case "fname_desc": contacts = contacts.OrderByDescending(c => c.FirstName).ToList(); break;
+                case "lname_asc": contacts = contacts.OrderBy(c => c.LastName).ToList(); break;
+                case "lname_desc": contacts = contacts.OrderByDescending(c => c.LastName).ToList(); break;
+                case "adress_asc": contacts = contacts.OrderBy(c => c.Adress).ToList(); break;
+                case "adress_des": contacts = contacts.OrderByDescending(c => c.Adress).ToList(); break;
                 case "fname_asc":
                 default:
-                    model.Contacts = model.Contacts.OrderBy(u => u.FirstName).ToList();
+                    contacts = contacts.OrderBy(u => u.FirstName).ToList();
                     break;
             }
-            int pageSize = 2;
-            int pageNumber = (page ?? 1);
-            model.ContactsPaged = model.Contacts.ToPagedList(pageNumber, pageSize);
+            int pageSize = 3;
+            if (model.PageSize != 0)
+            {
+                pageSize = model.PageSize;
+            }
+
+            int pageNumber = model.Page ?? 1;
+
+            model.Contacts = contacts.ToPagedList(pageNumber, pageSize);
 
             return View(model);
         }
@@ -61,7 +69,7 @@ namespace PhoneBook.Controllers
                 contact = contactService.GetByID(id.Value);
                 if (contact == null)
                 {
-                    return this.RedirectToAction(c => c.List(1));
+                    return this.RedirectToAction(c => c.List());
                 }
 
                 model.CountryID = contact.City.CountryID;
@@ -104,7 +112,7 @@ namespace PhoneBook.Controllers
                 c = contactService.GetByID(model.ID);
                 if (c == null)
                 {
-                    return this.RedirectToAction(co => co.List(1));
+                    return this.RedirectToAction(co => co.List());
                 }
             }
             else
@@ -142,7 +150,7 @@ namespace PhoneBook.Controllers
             contactService.SetSelectedGroups(c, model.SelectedGroups);
 
             contactService.Save(c);
-            return this.RedirectToAction(co => co.List(1));
+            return this.RedirectToAction(co => co.List());
         }
         public JsonResult GetCities(int countryID)
         {
@@ -168,10 +176,10 @@ namespace PhoneBook.Controllers
         {
             ContactsService contactService = new ContactsService();
             if (!id.HasValue)
-                return this.RedirectToAction(c => c.List(1));
+                return this.RedirectToAction(c => c.List());
             else
                 contactService.Delete(id.Value);
-            return this.RedirectToAction(c => c.List(1));
+            return this.RedirectToAction(c => c.List());
         }
 
         public JsonResult SaveLocations(string[] countries)

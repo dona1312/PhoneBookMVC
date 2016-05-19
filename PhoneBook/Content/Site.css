@@ -14,7 +14,9 @@
 .nav.navbar-nav {
     font-size: 15pt;
 }
-
+body > div.container.body-content > form > div > div.validation-summary-errors.text-danger,.info{
+    margin:0 0 20px 109px;
+}
 #select-dropdown {
     width: 50%;
 }

@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>All contacts</h3>
+<h4>All contacts</h4>
 
 <p>
     @(Html.ActionLink<ContactsController>("Create New", c => c.Edit()))
 </p>
-@using (Html.BeginForm<ContactsController>(c => c.List(1), FormMethod.Get))
+@using (Html.BeginForm<ContactsController>(c => c.List(), FormMethod.Get))
 {
     <p> Search:</p>
     @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" ,placeholder="Search..."} })
@@ -24,13 +24,13 @@
     <tr>
 
         <th>
-            @(Html.ActionLink<ContactsController>("First Name", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, null))
+            @(Html.ActionLink<ContactsController>("First Name", c => c.List(), new { Search = Model.Search, SortOrder = Model.SortOrder == "fname_asc" ? "fname_desc" : "fname_asc" }, null))
         </th>
         <th>
-            @(Html.ActionLink<ContactsController>("Last Name", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" }, null))
+            @(Html.ActionLink<ContactsController>("Last Name", c => c.List(), new { Search = Model.Search, SortOrder = Model.SortOrder == "lname_asc" ? "lname_desc" : "lname_asc" }, null))
         </th>
         <th>
-            @(Html.ActionLink<ContactsController>("Adress", c => c.List(1), new { Search = Model.Search, SortOrder = Model.SortOrder == "adress_asc" ? "adress_desc" : "adress_asc" }, null))
+            @(Html.ActionLink<ContactsController>("Adress", c => c.List(), new { Search = Model.Search, SortOrder = Model.SortOrder == "adress_asc" ? "adress_desc" : "adress_asc" }, null))
         </th>
         <th></th>
     </tr>
@@ -56,5 +56,9 @@
             </td>
         </tr>
     }
-
+  
 </table>
+<div>
+    @Html.PagedListPager(Model.Contacts, page => (@Url.Action<ContactsController>(c => c.List(), new { Page = page, Search = Model.Search, PageSize = Model.PageSize })))
+    Page @(Model.Contacts.PageCount < Model.Contacts.PageNumber ? 0 : Model.Contacts.PageNumber) of @Model.Contacts.PageCount
+</div>

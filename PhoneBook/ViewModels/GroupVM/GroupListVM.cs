@@ -9,7 +9,6 @@ namespace PhoneBook.ViewModels.GroupVM
 {
     public class GroupListVM
     {
-        //public List<Group> Groups { get; set; }
         public Dictionary<Group, IEnumerable<SelectListItem>> Groups { get; set; }
         public string SortOrder { get; set; }
         public string Search { get; set; }

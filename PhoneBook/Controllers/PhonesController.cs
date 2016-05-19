@@ -25,7 +25,7 @@ namespace PhoneBook.Controllers
 
             if (!model.ContactID.HasValue)
             {
-                return ControllerExtensions.RedirectToAction<ContactsController>(this, c => c.List(1));
+                return ControllerExtensions.RedirectToAction<ContactsController>(this, c => c.List());
             }
             
             model.Contact = phoneService.GetContact(model.ContactID.Value);
@@ -52,7 +52,7 @@ namespace PhoneBook.Controllers
                 {
                     if (phonesService.GetContact(model.ContactID) == null)
                     {
-                        return this.RedirectToAction<ContactsController>(c => c.List(1));
+                        return this.RedirectToAction<ContactsController>(c => c.List());
                     }
 
                     return this.RedirectToAction(c => c.List(), new { ContactID = model.ContactID });
