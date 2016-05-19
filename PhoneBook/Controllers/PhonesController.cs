@@ -23,7 +23,7 @@ namespace PhoneBook.Controllers
             PhoneListVM model = new PhoneListVM();
             TryUpdateModel(model);
 
-            if (model.ContactID==null)
+            if (!model.ContactID.HasValue)
             {
                 return ControllerExtensions.RedirectToAction<ContactsController>(this, c => c.List(1));
             }
@@ -36,23 +36,31 @@ namespace PhoneBook.Controllers
         }
         public ActionResult Edit(int? id)
         {
-            PhonesService phoneService = new PhonesService();
+            PhonesService phonesService = new PhonesService();
             PhoneEditVM model = new PhoneEditVM();
             TryUpdateModel(model);
 
             Phone phone;
-            if (id.HasValue)
+            if (!id.HasValue)
             {
-                phone = phoneService.GetByID(id.Value);
-                if (phone==null)
-                {
-                    return ControllerExtensions.RedirectToAction<GroupsController>(this, c => c.List());
-                }
+                phone = new Phone();
             }
             else
-                phone = new Phone();
+            {
+                phone = phonesService.GetByID(id.Value);
+                if (phone == null)
+                {
+                    if (phonesService.GetContact(model.ContactID) == null)
+                    {
+                        return this.RedirectToAction<ContactsController>(c => c.List(1));
+                    }
 
-            Mapper.Map(phone,model);
+                    return this.RedirectToAction(c => c.List(), new { ContactID = model.ContactID });
+                }
+                model.ContactID = phone.ContactID;
+            }
+
+            Mapper.Map(model, phone);
 
             return View(model);
         }

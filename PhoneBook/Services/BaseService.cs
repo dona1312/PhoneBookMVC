@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Transactions;
 using System.Web;
 
 namespace PhoneBook.Services
@@ -54,7 +55,14 @@ namespace PhoneBook.Services
             {
                 this.UnitOfWork.Rollback();
             }
-
+        }
+        public void InsertCollection(List<T> items)
+        {
+            using (var transactionScope = new TransactionScope(TransactionScopeOption.Required))
+            {
+                baseRepo.InsertCollection(items);
+            }
+            
         }
     }
 }

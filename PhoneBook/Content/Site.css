@@ -19,6 +19,12 @@
     width: 50%;
 }
 
+#pass-wrong {
+    display: block;
+}
+.sol-action-buttons{
+    display:none;
+}
 .contact-photo {
     width: 300px;
     height: 300px;
@@ -36,10 +42,12 @@ select,
 textarea {
     max-width: 280px;
 }
-.container.body-content p{
-    color:white;
-    font-size:15pt;
+
+.container.body-content p {
+    color: white;
+    font-size: 15pt;
 }
+
 footer {
     background-color: #2BBBAD;
     position: fixed;

@@ -15,7 +15,7 @@
     <div class="form-horizontal">
         <h5>Account Verify</h5>
         <hr />
-        <h5>Set your password!</h5>
+        <h5>Set your password and then you can login!</h5>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -34,7 +34,7 @@
 }
 
 <div>
-    @(Html.ActionLink<AccountController>("Back to List", c => c.Login()))
+    @(Html.ActionLink<AccountController>("Back to Login", c => c.Login()))
 </div>
 
 @section Scripts {

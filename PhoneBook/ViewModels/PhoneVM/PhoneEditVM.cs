@@ -11,9 +11,10 @@ namespace PhoneBook.ViewModels.PhoneVM
     {
         public int ID { get; set; }
         public int ContactID { get; set; }
-        public string Type { get; set; }
+
         [Display(Name = "Phone Type")]
         public PhoneTypeEnum PhoneType { get; set; }
+
         [RegularExpression("([0-9][0-9]*)", ErrorMessage = "Numbers only")]
         [Required(ErrorMessage = "Required field")]
         public string Number { get; set; }

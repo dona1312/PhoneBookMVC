@@ -71,7 +71,7 @@ namespace PhoneBook.Services
             {
                 Text = c.Name,
                 Value = c.ID.ToString()
-            });
+            }).OrderBy(city => city.Text);
         }
 
     }

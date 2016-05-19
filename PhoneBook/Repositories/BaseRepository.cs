@@ -1,4 +1,5 @@
-﻿using PhoneBook.Models;
+﻿using EntityFramework.BulkInsert.Extensions;
+using PhoneBook.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ using System.Web;
 
 namespace PhoneBook.Repositories
 {
-    public class BaseRepository<T> where T:BaseModel,new ()
+    public class BaseRepository<T> where T : BaseModel, new()
     {
         public DbContext Context { get; set; }
         public DbSet<T> dbSet { get; set; }
@@ -16,7 +17,7 @@ namespace PhoneBook.Repositories
         public BaseRepository()
         {
             this.Context = new AppContext();
-            this.dbSet = this.Context.Set <T>();
+            this.dbSet = this.Context.Set<T>();
         }
         public BaseRepository(UnitOfWork unit)
         {
@@ -24,7 +25,7 @@ namespace PhoneBook.Repositories
             this.Context = unit.Context;
             this.dbSet = this.Context.Set<T>();
         }
-        public List<T> GetAll(Expression<Func<T,bool>> filter=null)
+        public List<T> GetAll(Expression<Func<T, bool>> filter = null)
         {
             IQueryable<T> result = dbSet;
             if (filter != null)
@@ -33,7 +34,7 @@ namespace PhoneBook.Repositories
                 return result.ToList();
         }
         public void Add(T item)
-        { 
+        {
             this.dbSet.Add(item);
         }
         public void Edit(T item)
@@ -57,6 +58,11 @@ namespace PhoneBook.Repositories
         public T GetByID(int id)
         {
             return this.dbSet.Find(id);
+        }
+        public void InsertCollection(List<T> items)
+        {
+            this.Context.BulkInsert(items);
+            this.Context.SaveChanges();
         }
     }
 }

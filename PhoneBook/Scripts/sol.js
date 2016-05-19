@@ -815,8 +815,8 @@
                         return false;
                     });
 
-                this.$actionButtons = $('<div class="sol-action-buttons"/>').append($selectAllButton).append($deselectAllButton).append('<div class="sol-clearfix"/>');
-                this.$selectionContainer.prepend(this.$actionButtons);
+                //this.$actionButtons = $('<div class="sol-action-buttons"/>').append($selectAllButton).append($deselectAllButton).append('<div class="sol-clearfix"/>');
+                //this.$selectionContainer.prepend(this.$actionButtons);
             }
         },
 

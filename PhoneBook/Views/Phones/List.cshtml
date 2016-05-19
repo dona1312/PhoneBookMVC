@@ -7,7 +7,7 @@
 <h3>List</h3>
 
 <p>
-    @Html.ActionLink("Create New", "Edit", new { contactID = Model.Contact.ID })
+    @(Html.ActionLink<PhonesController>("Create new", c => c.Edit(),new {contactID=Model.ContactID}))
 </p>
 <table class="table">
     <tr>
@@ -24,7 +24,7 @@
                 @Html.DisplayFor(modelItem => item.Number)
             </td>
             <td>
-                @(Html.ActionLink<PhonesController>("Edit", c => c.Edit(), new { id = item.ID }, new { @class = "btn btn-info waves-effect waves-light" })) 
+                @(Html.ActionLink<PhonesController>("Edit", c => c.Edit(), new { id = item.ID,contactID=Model.ContactID }, new { @class = "btn btn-info waves-effect waves-light" })) 
                 @(Html.ActionLink<PhonesController>("Delete", c => c.Delete(item.ID),null, new { @class = "btn btn-danger bnt-sm waves-effect waves-light " }))
             </td>
         </tr>
@@ -32,5 +32,5 @@
    
 </table>
 <div>
-    @Html.ActionLink("Back to Contact", "List", "Contacts")
+    @(Html.ActionLink<ContactsController>("Back to List", c => c.List(1)))
 </div>

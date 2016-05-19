@@ -23,6 +23,7 @@ namespace PhoneBook.Filters
                 filterContext.HttpContext.Response.Redirect("~/Account/Login?redirectUrl="+filterContext.HttpContext.Request.Url);
                 filterContext.Result = new EmptyResult();
             }
+
         }
     }
 }

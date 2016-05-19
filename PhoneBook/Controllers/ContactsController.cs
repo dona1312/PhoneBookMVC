@@ -18,6 +18,7 @@ namespace PhoneBook.Controllers
     [AuthenticationFilter]
     public class ContactsController : Controller
     {
+    
         // GET: Contacts
         public ActionResult List(int? page)
         {
@@ -80,7 +81,7 @@ namespace PhoneBook.Controllers
             {
                 model.ImagePath = "default.png";
             }
-            model.Countries = contactService.GetAllCountries();
+            model.Countries = contactService.GetAllCountries().OrderBy(c=>c.Text);
             model.Cities = contactService.GetCitiesByCountry(model.CountryID);
 
             model.Groups = contactService.GetSelectedGroups(contact.Groups);
@@ -129,7 +130,7 @@ namespace PhoneBook.Controllers
             if (!ModelState.IsValid)
             {
                 model.Groups = contactService.GetSelectedGroups(c.Groups);
-                model.Countries = contactService.GetAllCountries();
+                model.Countries = contactService.GetAllCountries().OrderBy(country=> country.Text);
                 model.Cities = contactService.GetCitiesByCountry(model.CountryID);
 
                 return View(model);
@@ -172,5 +173,19 @@ namespace PhoneBook.Controllers
                 contactService.Delete(id.Value);
             return this.RedirectToAction(c => c.List(1));
         }
+
+        public JsonResult SaveLocations(string[] countries)
+        {
+
+
+            return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
+        }
+        public class Location
+        {
+            public string[] Cities { get; set; }
+            public string Country { get; set; }
+        }
     }
+
+
 }

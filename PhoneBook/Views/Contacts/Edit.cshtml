@@ -74,7 +74,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CountryID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.CountryID, Model.Countries,new { htmlAttributes = new { @class = "form-control" }, @id = "country" })
+                @Html.DropDownListFor(m => m.CountryID, Model.Countries, new { htmlAttributes = new { @class = "form-control" }, @id = "country" })
                 @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -91,11 +91,19 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Groups, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @foreach (var gr in Model.Groups)
+                @if (Model.Groups != null)
                 {
-                    <input type="checkbox" name="SelectedGroups" value="@gr.Value" id="@gr.Value" @Html.Raw(gr.Selected ? "checked" : String.Empty) />
-                    <label for="@gr.Value">@gr.Text</label>
+                    foreach (var gr in Model.Groups)
+                    {
+                        <input type="checkbox" name="SelectedGroups" value="@gr.Value" id="@gr.Value" @Html.Raw(gr.Selected ? "checked" : String.Empty) />
+                        <label for="@gr.Value">@gr.Text</label>
+                    }
                 }
+                else
+                {
+                    <p>No groups to show!</p>
+                }
+
             </div>
         </div>
 

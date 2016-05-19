@@ -11,6 +11,7 @@ namespace PhoneBook.App_Start
         public static void Run()
         {
             AutoMapperConfiguration.Configure();
+            //LocationConfig.ParseData();
         }
     }
 }
