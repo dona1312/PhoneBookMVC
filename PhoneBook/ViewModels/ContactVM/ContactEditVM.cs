@@ -24,7 +24,7 @@ namespace PhoneBook.ViewModels.ContactVM
         public string LastName { get; set; }
         [Required(ErrorMessage = "Required field")]
         [StringLength(50)]
-        [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "Use letters only please")]
+        [RegularExpression(@"^[a-zA-Z0-9_]*$", ErrorMessage = "Use letters only please")]
         public string Adress { get; set; }
         public List<Phone> Phones { get; set; }
 
