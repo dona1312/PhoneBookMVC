@@ -6,6 +6,7 @@ using PhoneBook.ViewModels.AccountVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Expressions;
@@ -78,7 +79,7 @@ namespace PhoneBook.Controllers
 
             user.Password = Guid.NewGuid().ToString();
             userService.Save(user);
-            PhoneBook.Services.EmailService.SendEmail(user, ControllerContext);
+            Task.Run(() => EmailService.SendEmail(user, ControllerContext));
 
             return this.RedirectToAction(c => c.Login());
 

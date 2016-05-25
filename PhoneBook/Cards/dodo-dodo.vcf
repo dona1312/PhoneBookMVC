@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:2.1
+N:tesov;test
+FN:test tesov
+ADR;HOME;PREF:;;sdasdasd;Plovdiv;;-;Bulgaria
+ORG:-
+TITLE:-
+TEL;HOME;VOICE:-
+TEL;CELL;VOICE:-
+URL;-
+EMAIL;PREF;INTERNET:-
+END:VCARD

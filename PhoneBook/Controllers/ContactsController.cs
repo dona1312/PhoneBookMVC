@@ -180,19 +180,11 @@ namespace PhoneBook.Controllers
                 contactService.Delete(id.Value);
             return this.RedirectToAction(c => c.List());
         }
-
-        public JsonResult SaveLocations(string[] countries)
+        public ActionResult Export()
         {
-
-
-            return Json(new object[] { new object() }, JsonRequestBehavior.AllowGet);
-        }
-        public class Location
-        {
-            public string[] Cities { get; set; }
-            public string Country { get; set; }
+            ContactsService cs = new ContactsService();
+            cs.vCardExport();
+            return this.RedirectToAction(c => c.List());
         }
     }
-
-
 }

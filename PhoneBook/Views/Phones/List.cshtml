@@ -7,36 +7,42 @@
 <h4>List</h4>
 
 <p>
-    @(Html.ActionLink<PhonesController>("Create new", c => c.Edit(),new {contactID=Model.ContactID}))
+    @(Html.ActionLink<PhonesController>("Create new", c => c.Edit(), new { contactID = Model.ContactID }))
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Number
-        </th>
-        <th>
-            Phone type
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model.Phones)
-    {
+@if (Model.Phones.Count == 0)
+{
+    <p>There are no phones to show.</p>
+}
+else
+{
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneType)
-            </td>
-            <td>
-                @(Html.ActionLink<PhonesController>("Edit", c => c.Edit(), new { id = item.ID,contactID=Model.ContactID }, new { @class = "btn btn-info waves-effect waves-light" })) 
-                @(Html.ActionLink<PhonesController>("Delete", c => c.Delete(item.ID),null, new { @class = "btn btn-danger bnt-sm waves-effect waves-light " }))
-            </td>
+            <th>
+                Number
+            </th>
+            <th>
+                Phone type
+            </th>
+            <th></th>
         </tr>
-    }
-   
-</table>
+
+        @foreach (var item in Model.Phones)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneType)
+                </td>
+                <td>
+                    @(Html.ActionLink<PhonesController>("Edit", c => c.Edit(), new { id = item.ID, contactID = Model.ContactID }, new { @class = "btn btn-info waves-effect waves-light" }))
+                    @(Html.ActionLink<PhonesController>("Delete", c => c.Delete(item.ID), null, new { @class = "btn btn-danger bnt-sm waves-effect waves-light " }))
+                </td>
+            </tr>
+        }
+    </table>
+}
 <div>
     @(Html.ActionLink<ContactsController>("Back to List", c => c.List()))
 </div>

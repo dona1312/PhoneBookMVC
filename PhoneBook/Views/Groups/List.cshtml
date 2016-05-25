@@ -10,62 +10,68 @@
 <p>
     @(Html.ActionLink<GroupsController>("Create new", c => c.Edit()))
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-
-        <th></th>
-    </tr>
-
-    @foreach (var group in Model.Groups)
-    {
+@if (Model.Groups.Count == 0)
+{
+    <p>There are no groups to show.</p>
+}
+else
+{
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => group.Key.Name)
-            </td>
-            <td>
-                @(Html.ActionLink<GroupsController>("Edit", c => c.Edit(), new { id = group.Key.ID }, new { @class = "btn btn-info waves-effect waves-light" }))
-                @(Html.ActionLink<GroupsController>("Delete", c => c.Delete(group.Key.ID), null, new { @class = "btn btn-danger waves-effect waves-light" }))
-                <a href="#" class="showContacts btn btn-default waves-effect waves-light">Show contacts</a>
-            </td>
+            <th>
+                Name
+            </th>
 
-            <td style="display:none">
-                <table id="contacts-table">
-                    <thead>
-                        <tr class="contacts">
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th id="select-dropdown">
-                                <select class="select-contact"  name="character" multiple="multiple" data-groupID="@group.Key.ID">
-                                    @foreach (var contact in group.Value)
-                                    {
-                                        <option value="@contact.Value" @Html.Raw(contact.Selected ? "selected" : String.Empty)  data-contactID="@contact.Value">@contact.Text</option>
-                                    }
-                                </select>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var c in group.Key.Contacts)
-                        {
-                            <tr class="contacts">
-                                <td>
-                                    @Html.DisplayFor(modelItem => c.FirstName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => c.LastName)
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </td>
+            <th></th>
         </tr>
-    }
-</table>
 
+        @foreach (var group in Model.Groups)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => group.Key.Name)
+                </td>
+                <td>
+                    @(Html.ActionLink<GroupsController>("Edit", c => c.Edit(), new { id = group.Key.ID }, new { @class = "btn btn-info waves-effect waves-light" }))
+                    @(Html.ActionLink<GroupsController>("Delete", c => c.Delete(group.Key.ID), null, new { @class = "btn btn-danger waves-effect waves-light" }))
+                    <a href="#" class="showContacts btn btn-default waves-effect waves-light">Show contacts</a>
+                </td>
+
+                <td style="display:none">
+                    <table id="contacts-table">
+                        <thead>
+                            <tr class="contacts">
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th id="select-dropdown">
+                                    <select class="select-contact" name="character" multiple="multiple" data-groupID="@group.Key.ID">
+                                        @foreach (var contact in group.Value)
+                                        {
+                                            <option value="@contact.Value" @Html.Raw(contact.Selected ? "selected" : String.Empty) data-contactID="@contact.Value">@contact.Text</option>
+                                        }
+                                    </select>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in group.Key.Contacts)
+                            {
+                                <tr class="contacts">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => c.FirstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => c.LastName)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        }
+    </table>
+}
 
 @section Scripts {
     <script>
@@ -89,7 +95,7 @@
                 $('.remove').click(function () {
 
                     var a = $(this).parent().parent();
-                 
+
                     var contactID = $(this).attr('data-contactid');
                     $.ajax({
                         type: "Post",
@@ -99,26 +105,26 @@
                         dataType: "json",
                         success: function () {
                             a.remove();
-                            $('sol-checkbox[value' + contactID + ']').prop('checked',false);
+                            $('sol-checkbox[value' + contactID + ']').prop('checked', false);
                         },
                         error: function () { alert('error'); }
                     });
                 });
-                
+
 
             }
-           
+
 
             $('.select-contact').change(function () {
                 var selectedContacts = $(this).val();
                 var groupID = $(this).attr('data-groupID');
 
                 var tbody = $(this).parent().parent().parent().next();
-                
+
                 $.ajax({
                     type: "Post",
                     url: '@Url.Action("Add","Groups")',
-                    data: JSON.stringify({ contactsID:selectedContacts,groupID:groupID}),
+                    data: JSON.stringify({ contactsID: selectedContacts, groupID: groupID }),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (data) {
@@ -127,7 +133,7 @@
 
                         $.each(data, function (key, value) {
                             input += "<tr>";
-                            input += "<td> " + value.firstName+"</td>";
+                            input += "<td> " + value.firstName + "</td>";
                             input += "<td> " + value.lastName + "</td>";
                             input += "</tr>";
                         });
@@ -135,7 +141,7 @@
                         tbody.append(input);
 
                         removeFromGroupEventListener();
-                      
+
                     },
                     error: function () { alert('error'); }
                 });

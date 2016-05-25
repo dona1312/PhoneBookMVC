@@ -11,7 +11,6 @@ namespace PhoneBook.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-
             HttpCookie cookie = HttpContext.Current.Request.Cookies["rememberMe"];
             if (cookie != null && AuthenticationService.LoggedUser == null)
             {

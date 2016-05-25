@@ -10,6 +10,7 @@
 <p>
     @(Html.ActionLink<ContactsController>("Create New", c => c.Edit()))
 </p>
+
 @using (Html.BeginForm<ContactsController>(c => c.List(), FormMethod.Get))
 {
     @Html.EditorFor(model => model.Search, new { htmlAttributes = new { @class = "form-control" ,placeholder="Search..."} })
@@ -66,5 +67,8 @@ else
 <div>
     @Html.PagedListPager(Model.Contacts, page => (@Url.Action<ContactsController>(c => c.List(), new { Page = page, Search = Model.Search, PageSize = Model.PageSize })))
     Page @(Model.Contacts.PageCount < Model.Contacts.PageNumber ? 0 : Model.Contacts.PageNumber) of @Model.Contacts.PageCount
-</div>
+</div><br />
+<p>
+    @(Html.ActionLink<ContactsController>("Export contacts", c => c.Export()))
+</p>
 }

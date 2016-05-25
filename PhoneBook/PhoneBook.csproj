@@ -301,6 +301,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Cards\" />
     <Folder Include="Uploads\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>

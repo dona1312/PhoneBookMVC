@@ -1,0 +1,16 @@
+BEGIN:VCARD
+VERSION:2.1
+N:first;first
+FN:first first
+ADR;HOME;PREF:;;firstsdsdad;George Town;;-;Cayman Islands
+TEL;HOME;VOICE:-
+TEL;CELL;VOICE:-
+END:VCARD
+BEGIN:VCARD
+VERSION:2.1
+N:second;second
+FN:second second
+ADR;HOME;PREF:;;secondsecond;Ardino;;-;Bulgaria
+TEL;HOME;VOICE:-
+TEL;CELL;VOICE:-
+END:VCARD
